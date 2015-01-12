@@ -1,0 +1,24 @@
+{% extends "manage/_base.html" %}
+{% block title %}Audiobook{% endblock %}
+{% block container %}
+<div class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Manage:</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../films">Films</a></li>
+        <li class="active"><a href="./">Audiobook</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <p>Фильмы
+  {% for it in items %}
+  <p>{{ it.name }}
+  {% endfor %}
+</div>
+{% endblock %}

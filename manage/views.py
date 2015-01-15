@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect
+from django_ajax.decorators import ajax
+from django.shortcuts import render
 
 
 def index(request):
-    return redirect('/manage/films/')
+    return render(request, 'manage/index.html')
 
 
-def films(request):
+@ajax
+def get_films(request):
     class Film(object):
         def __init__(self, name):
             self.name = name
 
     items = [Film("one"), Film("two")]
-    return render(request, 'manage/films.html', {'items': items})
+    return render(request, 'manage/films_data.html', {'items': items})
 
 
-def audiobook(request):
+@ajax
+def get_audiobooks(request):
     class Book(object):
         def __init__(self, name):
             self.name = name
 
     items = [Book("first"), Book("second")]
-    return render(request, 'manage/audiobook.html', {'items': items})
+    return render(request, 'manage/audiobooks_data.html', {'items': items})

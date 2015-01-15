@@ -4,6 +4,6 @@ from manage import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
-    url(r'^films/$', views.films, name='films'),
-    url(r'^audiobook/$', views.audiobook, name='audiobook'),
+    url(r'^get/films/$', views.get_films, name='get_films'),
+    url(r'^get/audiobooks/$', views.get_audiobooks, name='get_audiobooks'),
 )

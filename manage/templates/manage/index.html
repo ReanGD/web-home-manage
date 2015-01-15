@@ -1,0 +1,51 @@
+{% extends "manage/_base.html" %}
+{% load staticfiles %}
+{% block title %}Films{% endblock %}
+{% block container %}
+<div class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Manage:</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active" id="tabFilms", ajax="./get/films/"><a href="#">Films</a></li>
+        <li id="tabAudioBook", ajax="./get/audiobooks/"><a href="#">Audiobook</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron" id="view">
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{% static 'django_ajax/jquery.ajax.min.js' %}"></script>
+<script type="text/javascript">
+  function update_films()
+  {
+    ajaxGet('./get/films/', function(content){
+        $("#view").html(content)
+    })
+  }
+  function update_audiobooks()
+  {
+    ajaxGet('./get/audiobooks/', function(content){
+        $("#view").html(content)
+    })
+  }
+  function refresh(e, self, ajax_func)
+  {
+    e.preventDefault()
+    self.tab('show')
+    // alert(self.parent().prop("ajax"))
+    // alert(self.parent().id())
+    ajax_func()
+  }
+
+  $('#tabFilms a').click(function(e){refresh(e, $(this), update_films)})
+  $('#tabAudioBook a').click(function(e){refresh(e, $(this), update_audiobooks)})
+
+  update_films()
+</script>
+{% endblock %}

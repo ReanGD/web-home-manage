@@ -2,6 +2,7 @@
 
 from django_ajax.decorators import ajax
 from django.shortcuts import render
+from manage.models import BindSettings, Torrents, TorrentFiles
 
 
 def index(request):

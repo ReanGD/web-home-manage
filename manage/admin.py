@@ -1,6 +1,9 @@
 from django.contrib import admin
-from manage.models import BindSettings, Torrents, TorrentFiles
+from manage.models import LocalStorage, RemoteStorage, StorageMap, Torrent, TorrentFile
 
-admin.site.register(BindSettings)
-admin.site.register(Torrents)
-admin.site.register(TorrentFiles)
+
+admin.site.register(LocalStorage)
+admin.site.register(RemoteStorage)
+admin.site.register(StorageMap)
+admin.site.register(Torrent)
+admin.site.register(TorrentFile)

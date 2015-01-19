@@ -52,11 +52,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': '172.17.0.12',
-        'PORT': '3306',
+        'NAME': os.environ.get('DB_ENV_MYSQL_DATABASE', 'db'),
+        'USER': os.environ.get('DB_ENV_MYSQL_USER', 'admin'),
+        'PASSWORD': os.environ.get('DB_ENV_MYSQL_PASSWORD', 'admin'),
+        'HOST': os.environ.get('DB_PORT_3306_TCP_ADDR', '172.17.0.1'),
+        'PORT': os.environ.get('DB_PORT_3306_TCP_PORT', '3306'),
     }
 }
 

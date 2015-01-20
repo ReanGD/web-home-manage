@@ -27,3 +27,19 @@ def get_audiobooks(request):
 
     items = [Book("first"), Book("second")]
     return render(request, 'manage/audiobooks_data.html', {'items': items})
+
+
+@ajax
+def get_local_storage(request):
+    items = LocalStorage.objects.all()
+    return render(request, 'manage/local_storage_data.html', {'items': items})
+
+
+@ajax
+def get_remote_storage(request):
+    return render(request, 'manage/remote_storage_data.html')
+
+
+@ajax
+def get_settings(request):
+    return render(request, 'manage/settings_data.html')

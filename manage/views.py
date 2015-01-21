@@ -37,7 +37,8 @@ def get_local_storage(request):
 
 @ajax
 def get_remote_storage(request):
-    return render(request, 'manage/remote_storage_data.html')
+    items = RemoteStorage.objects.all()
+    return render(request, 'manage/remote_storage_data.html', {'items': items})
 
 
 @ajax

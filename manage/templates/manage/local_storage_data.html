@@ -21,11 +21,9 @@
     <td>{{ it.name }}</td>
     <td>{{ it.path }}</td>
     <td>
-      <div class="container-fluid">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
-          <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
-        </div>
+      <div class="container-fluid btn-group">
+        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
       </div>
     </td>
   </tr>
@@ -33,7 +31,7 @@
   </table>
 </div>
 
-<div class="modal fade" id="dialogAdd" tabindex="-1" role="dialog" action="{% url 'manage:local_storage_add' Job.id %}" method="post" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="dialogAdd" tabindex="-1" role="dialog" action="{% url 'manage:save_local_storage' %}" method="post" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -45,9 +43,7 @@
           <span class="input-group-addon">Name</span>
           <input id="name" type="text" class="form-control" placeholder="Films">
         </div>        
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
+        <div class="input-group" style="padding-top:20px;">
           <span class="input-group-addon">Path&nbsp;&nbsp;</span>
           <input id="path" type="text" class="form-control" placeholder="Films">
         </div>

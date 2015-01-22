@@ -17,3 +17,8 @@ def save_local_storage(request):
 def save_remote_storage(request):
     # settings.set_jenkins_url(request.POST['JenkinsUrl'])
     return HttpResponseRedirect(reverse('manage:index'))
+
+
+def save_storage_map(request):
+    # settings.set_jenkins_url(request.POST['JenkinsUrl'])
+    return HttpResponseRedirect(reverse('manage:index'))

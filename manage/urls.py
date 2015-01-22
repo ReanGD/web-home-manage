@@ -12,5 +12,7 @@ urlpatterns = patterns('',
     url(r'^get/remote_storage/$', views.get_remote_storage),
     url(r'^save/remote_storage/$', forms.save_remote_storage,
         name='save_remote_storage'),
-    url(r'^get/settings/$', views.get_settings),
+    url(r'^get/storage_map/$', views.get_storage_map),
+    url(r'^save/storage_map/$', forms.save_storage_map,
+        name='save_storage_map'),
 )

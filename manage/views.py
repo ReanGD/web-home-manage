@@ -42,5 +42,6 @@ def get_remote_storage(request):
 
 
 @ajax
-def get_settings(request):
-    return render(request, 'manage/settings_data.html')
+def get_storage_map(request):
+    items = StorageMap.objects.all()
+    return render(request, 'manage/storage_map_data.html', {'items': items})

@@ -14,17 +14,15 @@ def _text_input_widget(placeholder):
                             'class': 'form-control'})
 
 
-def local_storage(request, id=None):
+def _form_process(request, id, tModel, widgets, form_url, header):
     if id:
-        inst = get_object_or_404(LocalStorage, pk=id)
-        action = reverse('manage:form_local_storage', args=[id])
+        inst = get_object_or_404(tModel, pk=id)
+        action = reverse(form_url, args=[id])
     else:
-        inst = LocalStorage()
-        action = reverse('manage:form_local_storage')
+        inst = tModel()
+        action = reverse(form_url)
 
-    tForm = modelform_factory(LocalStorage, widgets={
-        'name': _text_input_widget('Films'),
-        'path': _text_input_widget('Films')})
+    tForm = modelform_factory(tModel, widgets=widgets)
 
     if request.method == 'POST':
         form = tForm(request.POST, instance=inst)
@@ -34,31 +32,33 @@ def local_storage(request, id=None):
     else:
         form = tForm(instance=inst)
 
-    return render(request, 'manage/form_local_storage.html',
-                  {'form': form, 'action': action})
+    return render(request, 'manage/form_edit_add.html',
+                  {'form': form, 'action': action, 'header': header})
+
+
+def local_storage(request, id=None):
+    url = 'manage:form_local_storage'
+    if id:
+        header = "Edit local storage"
+    else:
+        header = "Add local storage"
+    widgets = {
+        'name': _text_input_widget('Films'),
+        'path': _text_input_widget('Films')}
+
+    return _form_process(request, id, LocalStorage, widgets, url, header)
 
 
 def remote_storage(request, id=None):
+    url = 'manage:form_remote_storage'
     if id:
-        inst = get_object_or_404(RemoteStorage, pk=id)
-        action = reverse('manage:form_remote_storage', args=[id])
+        header = "Edit remote storage"
     else:
-        inst = RemoteStorage()
-        action = reverse('manage:form_remote_storage')
+        header = "Add remote storage"
+    widgets = {
+        'path': _text_input_widget('Media/Films')}
 
-    tForm = modelform_factory(RemoteStorage, widgets={
-        'path': _text_input_widget('Media/Films')})
-
-    if request.method == 'POST':
-        form = tForm(request.POST, instance=inst)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('manage:index'))
-    else:
-        form = tForm(instance=inst)
-
-    return render(request, 'manage/form_remote_storage.html',
-                  {'form': form, 'action': action})
+    return _form_process(request, id, RemoteStorage, widgets, url, header)
 
 
 def save_storage_map(request):

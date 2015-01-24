@@ -16,7 +16,7 @@ def get_films(request):
             self.name = name
 
     items = [Film("one"), Film("two")]
-    return render(request, 'manage/films_data.html', {'items': items})
+    return render(request, 'manage/data_films.html', {'items': items})
 
 
 @ajax
@@ -26,22 +26,22 @@ def get_audiobooks(request):
             self.name = name
 
     items = [Book("first"), Book("second")]
-    return render(request, 'manage/audiobooks_data.html', {'items': items})
+    return render(request, 'manage/data_audiobooks.html', {'items': items})
 
 
 @ajax
 def get_local_storage(request):
     items = LocalStorage.objects.all()
-    return render(request, 'manage/local_storage_data.html', {'items': items})
+    return render(request, 'manage/data_local_storage.html', {'items': items})
 
 
 @ajax
 def get_remote_storage(request):
     items = RemoteStorage.objects.all()
-    return render(request, 'manage/remote_storage_data.html', {'items': items})
+    return render(request, 'manage/data_remote_storage.html', {'items': items})
 
 
 @ajax
 def get_storage_map(request):
     items = StorageMap.objects.all()
-    return render(request, 'manage/storage_map_data.html', {'items': items})
+    return render(request, 'manage/data_storage_map.html', {'items': items})

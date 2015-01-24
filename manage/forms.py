@@ -1,17 +1,41 @@
 # -*- coding: utf-8 -*-
 
-# from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.forms import TextInput
+from django.forms.models import modelform_factory
 
-# from fitnesse.models import Job
-
-# import fitnesse.helper.settings as settings
+from manage.models import LocalStorage
 
 
-def save_local_storage(request):
-    # settings.set_jenkins_url(request.POST['JenkinsUrl'])
-    return HttpResponseRedirect(reverse('manage:index'))
+def _text_input_widget(placeholder):
+    return TextInput(attrs={'placeholder': placeholder,
+                            'class': 'form-control'})
+
+
+def local_storage(request, id=None):
+    if id:
+        inst = get_object_or_404(LocalStorage, pk=id)
+        action = reverse('manage:form_local_storage', args=[id])
+    else:
+        inst = LocalStorage()
+        action = reverse('manage:form_local_storage')
+
+    tForm = modelform_factory(LocalStorage, widgets={
+        'name': _text_input_widget('Films'),
+        'path': _text_input_widget('Films')})
+
+    if request.method == 'POST':
+        form = tForm(request.POST, instance=inst)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('manage:index'))
+    else:
+        form = tForm(instance=inst)
+
+    return render(request, 'manage/form_local_storage.html',
+                  {'form': form, 'action': action})
 
 
 def save_remote_storage(request):

@@ -30,7 +30,7 @@ def get_audiobooks(request):
 
 
 @ajax
-def get_local_storage(request):
+def local_storage(request):
     items = LocalStorage.objects.all()
     return render(request, 'manage/data_local_storage.html', {'items': items})
 

@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <span class="navbar-brand">Local storage:</span>
+    </div>
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse navbar-right">
+          <button type="button" onclick="document.location = '{% url 'manage:form_local_storage' %}'" class="btn btn-default navbar-btn">Add</button>
+      </div>
+    </div>
+  </nav>
+
+  <table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Path</th>
+    <th>Actions</th>
+  </tr>
+  {% for it in items %}
+  <tr>
+    <td>{{ it.name }}</td>
+    <td>{{ it.path }}</td>
+    <td>
+      <div class="container-fluid btn-group">
+        <button type="button" onclick="document.location = '{% url 'manage:form_local_storage' it.id %}'" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+</div>

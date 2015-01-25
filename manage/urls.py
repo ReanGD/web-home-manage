@@ -4,8 +4,9 @@ from manage import views, forms
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
-    url(r'^get/films/$', views.get_films),
-    url(r'^get/audiobooks/$', views.get_audiobooks),
+
+    url(r'^torrent/list/(?P<id>\d+)$', views.torrent,
+        {}, 'torrent_list'),
 
     url(r'^local_storage/list/$', forms.local_storage,
         {'action': 'list'}, 'local_storage_list'),

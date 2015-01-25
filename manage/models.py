@@ -21,21 +21,24 @@ class StorageMap(models.Model):
     remote_ptr = models.ForeignKey(RemoteStorage, verbose_name="Remote")
     min_ratio = models.FloatField(null=False, default=2.0)
 
+    class Meta:
+        unique_together = (("local_ptr", "remote_ptr"),)
+
     def __unicode__(self):
-        msg = "%s (%s) <==> %s: min rating: %f"
-        return msg % (self.local_ptr.name,
-                      self.local_ptr.path,
-                      self.remote_ptr.path,
+        msg = "%s <==> %s: min rating: %f"
+        return msg % (self.local_ptr,
+                      self.remote_ptr,
                       self.min_ratio)
 
 
 class Torrent(models.Model):
-    storage_ptr = models.ForeignKey(LocalStorage, verbose_name="Storage")
+    storage_map_ptr = models.ForeignKey(LocalStorage,
+                                        verbose_name="Storage map")
     name = models.TextField(unique=False)
     idhash = models.CharField("Hash", max_length=40, unique=True, db_index=True)
 
     def __unicode__(self):
-        return "%s: %s(%s)" % (self.storage_ptr.name, self.name, self.idhash)
+        return "%s: %s(%s)" % (self.storage_map_ptr, self.name, self.idhash)
 
 
 class TorrentFile(models.Model):

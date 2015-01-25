@@ -85,7 +85,7 @@ def _view(request, model, tForm):
               'action_add': reverse(meta_model.url_add()),
               'labels': [it.label for it in form.fields.values()],
               'header': meta_model.header_list()}
-    return render(request, 'manage/standart_view.html', params)
+    return render(request, 'manage/settings_view.html', params)
 
 
 def _process(request, action, id, model, widgets):
@@ -129,7 +129,7 @@ def _process(request, action, id, model, widgets):
               'action': action_url,
               'header': header,
               'action_btn': action_btn}
-    return render(request, 'manage/form_edit_add.html', params)
+    return render(request, 'manage/settings_form.html', params)
 
 
 @ajax

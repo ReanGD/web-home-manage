@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <span class="navbar-brand">{{ header }}</span>
+    </div>
+  </nav>
+  <table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Path</th>
+    <th>Actions</th>
+  </tr>
+  {% for it in items %}
+  <tr>
+    <td>{{ it.name }}</td>
+    <td>{{ it.idhash }}</td>    
+    <td>
+      <div class="container-fluid btn-group">
+        <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+</div>

@@ -10,21 +10,12 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul id="mainmenu" class="nav navbar-nav navbar-left">
-          <li>
-            <a id="tabFilms" url="./get/films/", href="#">Films</a>
-          </li>
-          <li>
-            <a id="tabAudioBook" url="./get/audiobooks/", href="#">Audiobook</a>
-          </li>
-          <li>
-            <a id="tabLocalStorage" url="{% url 'manage:local_storage_list' %}", href="#">Local storage</a>
-          </li>
-          <li>
-            <a id="tabRemoteStorage" url="{% url 'manage:remote_storage_list' %}", href="#">Remote storage</a>
-          </li>
-          <li>
-            <a id="tabStorageMap" url="{% url 'manage:storage_map_list' %}", href="#">Storage map</a>
-          </li>
+          {% for it in items %}
+          <li><a url="{% url 'manage:torrent_list' it.id %}", href="#">{{ it.local_ptr.name }}</a></li>
+          {% endfor %}  
+          <li><a url="{% url 'manage:local_storage_list' %}", href="#">Local storage</a></li>
+          <li><a url="{% url 'manage:remote_storage_list' %}", href="#">Remote storage</a></li>
+          <li><a url="{% url 'manage:storage_map_list' %}", href="#">Storage map</a></li>
         </ul>
       </div>
     </div>
@@ -51,14 +42,10 @@
 
   function to_index(e)
   {
-    refresh(e, $('#tabFilms'))
+    refresh(e, $('#mainmenu>li>a:first'))
   }
 
-  $('#tabFilms').click(refresh);
-  $('#tabAudioBook').click(refresh);
-  $('#tabLocalStorage').click(refresh);
-  $('#tabRemoteStorage').click(refresh);
-  $('#tabStorageMap').click(refresh);
+  $('#mainmenu>li>a').click(refresh);
   $('#index').click(to_index);
   $(document).ready(to_index);
 </script>

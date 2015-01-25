@@ -21,7 +21,10 @@ urlpatterns = patterns('',
     url(r'^form/remote_storage/(?P<id>\d+)$', forms.remote_storage,
         name='form_remote_storage'),
 
-    url(r'^get/storage_map/$', views.get_storage_map),
-    url(r'^save/storage_map/$', forms.save_storage_map,
-        name='save_storage_map'),
+    url(r'^get/storage_map/$', views.storage_map,
+        name='get_storage_map'),
+    url(r'^form/storage_map/$', forms.storage_map,
+        name='form_storage_map'),
+    url(r'^form/storage_map/(?P<id>\d+)$', forms.storage_map,
+        name='form_storage_map'),
 )

@@ -3,10 +3,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.forms import TextInput
+from django.forms import TextInput, Select, NumberInput
 from django.forms.models import modelform_factory
 
-from manage.models import LocalStorage, RemoteStorage
+from manage.models import LocalStorage, RemoteStorage, StorageMap
 
 
 def _text_input_widget(placeholder):
@@ -14,7 +14,18 @@ def _text_input_widget(placeholder):
                             'class': 'form-control'})
 
 
-def _form_process(request, id, tModel, widgets, form_url, header):
+def _select_widget():
+    return Select(attrs={'class': 'selectpicker form-control'})
+
+
+def _number_widget(min_value, max_value, step):
+    return NumberInput(attrs={'min': min_value,
+                              'max': max_value,
+                              'step': step,
+                              'class': 'form-control'})
+
+
+def _form_process(request, id, tModel, widgets, form_url, header, labels={}):
     if id:
         inst = get_object_or_404(tModel, pk=id)
         action = reverse(form_url, args=[id])
@@ -22,7 +33,7 @@ def _form_process(request, id, tModel, widgets, form_url, header):
         inst = tModel()
         action = reverse(form_url)
 
-    tForm = modelform_factory(tModel, widgets=widgets)
+    tForm = modelform_factory(tModel, widgets=widgets, labels=labels)
 
     if request.method == 'POST':
         form = tForm(request.POST, instance=inst)
@@ -61,6 +72,17 @@ def remote_storage(request, id=None):
     return _form_process(request, id, RemoteStorage, widgets, url, header)
 
 
-def save_storage_map(request):
-    # settings.set_jenkins_url(request.POST['JenkinsUrl'])
-    return HttpResponseRedirect(reverse('manage:index'))
+def storage_map(request, id=None):
+    url = 'manage:form_storage_map'
+    if id:
+        header = "Edit storage map"
+    else:
+        header = "Add storage map"
+    widgets = {'local_ptr': _select_widget(),
+               'remote_ptr': _select_widget(),
+               'min_ratio': _number_widget(0.0, 2.0, 0.1)}
+    labels = {'local_ptr': 'Local',
+              'remote_ptr': 'Remote',
+              'min_ratio': 'Min ratio'}
+
+    return _form_process(request, id, StorageMap, widgets, url, header, labels)

@@ -5,12 +5,26 @@ class LocalStorage(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False)
     path = models.CharField(max_length=255, unique=True, null=False)
 
+    @staticmethod
+    def default_captions():
+        return ['Name', 'Path']
+
+    def default_view(self):
+        return (self.name, self.path)
+
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.path)
 
 
 class RemoteStorage(models.Model):
     path = models.CharField(max_length=255, unique=True, null=False)
+
+    @staticmethod
+    def default_captions():
+        return ['Path']
+
+    def default_view(self):
+        return (self.path,)
 
     def __unicode__(self):
         return "%s" % self.path
@@ -20,6 +34,14 @@ class StorageMap(models.Model):
     local_ptr = models.ForeignKey(LocalStorage)
     remote_ptr = models.ForeignKey(RemoteStorage)
     min_ratio = models.FloatField(null=False, default=2.0)
+
+    @staticmethod
+    def default_captions():
+        return ['Local', 'Remote', 'Min ratio']
+
+    def default_view(self):
+        local = "%s (%s)" % (self.local_ptr.name, self.local_ptr.path)
+        return (local, self.remote_ptr.path, self.min_ratio)
 
     def __unicode__(self):
         msg = "%s (%s) <==> %s: min rating: %f"

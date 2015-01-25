@@ -5,13 +5,6 @@ class LocalStorage(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False)
     path = models.CharField(max_length=255, unique=True, null=False)
 
-    @staticmethod
-    def default_captions():
-        return ['Name', 'Path']
-
-    def default_view(self):
-        return (self.name, self.path)
-
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.path)
 
@@ -19,29 +12,14 @@ class LocalStorage(models.Model):
 class RemoteStorage(models.Model):
     path = models.CharField(max_length=255, unique=True, null=False)
 
-    @staticmethod
-    def default_captions():
-        return ['Path']
-
-    def default_view(self):
-        return (self.path,)
-
     def __unicode__(self):
         return "%s" % self.path
 
 
 class StorageMap(models.Model):
-    local_ptr = models.ForeignKey(LocalStorage)
-    remote_ptr = models.ForeignKey(RemoteStorage)
+    local_ptr = models.ForeignKey(LocalStorage, verbose_name="Local")
+    remote_ptr = models.ForeignKey(RemoteStorage, verbose_name="Remote")
     min_ratio = models.FloatField(null=False, default=2.0)
-
-    @staticmethod
-    def default_captions():
-        return ['Local', 'Remote', 'Min ratio']
-
-    def default_view(self):
-        local = "%s (%s)" % (self.local_ptr.name, self.local_ptr.path)
-        return (local, self.remote_ptr.path, self.min_ratio)
 
     def __unicode__(self):
         msg = "%s (%s) <==> %s: min rating: %f"
@@ -52,16 +30,16 @@ class StorageMap(models.Model):
 
 
 class Torrent(models.Model):
-    storage_ptr = models.ForeignKey(LocalStorage)
+    storage_ptr = models.ForeignKey(LocalStorage, verbose_name="Storage")
     name = models.TextField(unique=False)
-    idhash = models.CharField(max_length=40, unique=True, db_index=True)
+    idhash = models.CharField("Hash", max_length=40, unique=True, db_index=True)
 
     def __unicode__(self):
         return "%s: %s(%s)" % (self.storage_ptr.name, self.name, self.idhash)
 
 
 class TorrentFile(models.Model):
-    torent_ptr = models.ForeignKey(Torrent)
+    torent_ptr = models.ForeignKey(Torrent, verbose_name="Torrent")
     path = models.TextField(unique=False)
 
     def __unicode__(self):

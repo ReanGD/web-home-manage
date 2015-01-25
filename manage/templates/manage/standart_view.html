@@ -11,7 +11,7 @@
   </nav>
   <table class="table">
   <tr>
-    {% for it in captions %}
+    {% for it in labels %}
     <th>{{ it }}</th>
     {% endfor %}  
     <th>Actions</th>
@@ -36,23 +36,16 @@
 <script type="text/javascript">
     $(".btn-form").click(function(e) {
         e.preventDefault();
-        var url = $(this).attr('url');
-        $("#dlg").load(url, function() {
-            $(this).modal('show');
+        ajaxGet($(this).attr('url'), function(content){
+          $("#dlg").html(content).modal('show');
         });
         return false;
     });
 
-    $(document).on('submit', '#id_form_add_edit', function() {
-        $.ajax({ 
-            type: $(this).attr('method'), 
-            url: this.action, 
-            data: $(this).serialize(),
-            context: this,
-            success: function(data, status) {
-                $("#dlg").html(data);
-            }
-        });
-        return false;
+    $(document).on('submit', '#id_form_add_edit', function(){
+      ajaxPost(this.action, $(this).serialize(), function(data, status) {
+        $("#dlg").html(data);
+      });
+      return false;
     });
 </script>

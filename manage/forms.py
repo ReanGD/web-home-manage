@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import re
+
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.forms import TextInput, Select, NumberInput
 from django.forms.models import modelform_factory
+from django_ajax.decorators import ajax
 
 from manage.models import LocalStorage, RemoteStorage, StorageMap
 
@@ -25,15 +28,70 @@ def _number_widget(min_value, max_value, step):
                               'class': 'form-control'})
 
 
-def _form_process(request, id, tModel, widgets, form_url, header, labels={}):
-    if id:
-        inst = get_object_or_404(tModel, pk=id)
-        action = reverse(form_url, args=[id])
-    else:
-        inst = tModel()
-        action = reverse(form_url)
+class MetaModel(object):
+    def __init__(self, model):
+        self.model = model
+        self._re1 = re.compile('(.)([A-Z][a-z]+)')
+        self._re2 = re.compile('([a-z0-9])([A-Z])')
 
-    tForm = modelform_factory(tModel, widgets=widgets, labels=labels)
+    def header_list(self):
+        tmp = self._re1.sub(r'\1 \2', self.model.__name__)
+        return self._re2.sub(r'\1 \2', tmp) + ":"
+
+    def header_add(self):
+        tmp = self._re1.sub(r'\1 \2', self.model.__name__)
+        return "Add " + self._re2.sub(r'\1 \2', tmp).lower()
+
+    def header_edit(self):
+        tmp = self._re1.sub(r'\1 \2', self.model.__name__)
+        return "Edit " + self._re2.sub(r'\1 \2', tmp).lower()
+
+    def url_add(self):
+        tmp = self._re1.sub(r'\1_\2', self.model.__name__)
+        return "manage:" + self._re2.sub(r'\1_\2', tmp).lower() + "_add"
+
+    def url_edit(self):
+        tmp = self._re1.sub(r'\1_\2', self.model.__name__)
+        return "manage:" + self._re2.sub(r'\1_\2', tmp).lower() + "_edit"
+
+
+def _view(request, model, tForm):
+    class ViewItem:
+        def __init__(self, url, data):
+            self.url = url
+            self.data = data
+
+    form = tForm()
+    meta_model = MetaModel(model)
+
+    items = []
+    for it in model.objects.all():
+        url = reverse(meta_model.url_edit(), args=[it.id])
+        data = tuple(getattr(it, field) for field in form.fields.keys())
+        items.append(ViewItem(url, data))
+
+    params = {'items': items,
+              'action_add': reverse(meta_model.url_add()),
+              'labels': [it.label for it in form.fields.values()],
+              'header': meta_model.header_list()}
+    return render(request, 'manage/standart_view.html', params)
+
+
+def _process(request, action, id, model, widgets):
+    tForm = modelform_factory(model, widgets=widgets)
+    meta_model = MetaModel(model)
+
+    if action == 'list':
+        return _view(request, model, tForm)
+
+    if id:
+        inst = get_object_or_404(model, pk=id)
+        action = reverse(meta_model.url_edit(), args=[id])
+        header = meta_model.header_edit()
+    else:
+        inst = model()
+        action = reverse(meta_model.url_add())
+        header = meta_model.header_add()
 
     if request.method == 'POST':
         form = tForm(request.POST, instance=inst)
@@ -47,42 +105,24 @@ def _form_process(request, id, tModel, widgets, form_url, header, labels={}):
                   {'form': form, 'action': action, 'header': header})
 
 
-def local_storage(request, id=None):
-    url = 'manage:form_local_storage'
-    if id:
-        header = "Edit local storage"
-    else:
-        header = "Add local storage"
+@ajax
+def local_storage(request, action, id=None):
     widgets = {
         'name': _text_input_widget('Films'),
         'path': _text_input_widget('Films')}
+    return _process(request, action, id, LocalStorage, widgets)
 
-    return _form_process(request, id, LocalStorage, widgets, url, header)
 
-
-def remote_storage(request, id=None):
-    url = 'manage:form_remote_storage'
-    if id:
-        header = "Edit remote storage"
-    else:
-        header = "Add remote storage"
+@ajax
+def remote_storage(request, action, id=None):
     widgets = {
         'path': _text_input_widget('Media/Films')}
+    return _process(request, action, id, RemoteStorage, widgets)
 
-    return _form_process(request, id, RemoteStorage, widgets, url, header)
 
-
-def storage_map(request, id=None):
-    url = 'manage:form_storage_map'
-    if id:
-        header = "Edit storage map"
-    else:
-        header = "Add storage map"
+@ajax
+def storage_map(request, action, id=None):
     widgets = {'local_ptr': _select_widget(),
                'remote_ptr': _select_widget(),
                'min_ratio': _number_widget(0.0, 2.0, 0.1)}
-    labels = {'local_ptr': 'Local',
-              'remote_ptr': 'Remote',
-              'min_ratio': 'Min ratio'}
-
-    return _form_process(request, id, StorageMap, widgets, url, header, labels)
+    return _process(request, action, id, StorageMap, widgets)

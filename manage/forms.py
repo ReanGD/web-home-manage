@@ -34,31 +34,41 @@ class MetaModel(object):
         self._re1 = re.compile('(.)([A-Z][a-z]+)')
         self._re2 = re.compile('([a-z0-9])([A-Z])')
 
-    def header_list(self):
+    def header(self):
         tmp = self._re1.sub(r'\1 \2', self.model.__name__)
-        return self._re2.sub(r'\1 \2', tmp) + ":"
+        return self._re2.sub(r'\1 \2', tmp)
+
+    def header_list(self):
+        return self.header() + ":"
 
     def header_add(self):
-        tmp = self._re1.sub(r'\1 \2', self.model.__name__)
-        return "Add " + self._re2.sub(r'\1 \2', tmp).lower()
+        return "Add " + self.header().lower()
 
     def header_edit(self):
-        tmp = self._re1.sub(r'\1 \2', self.model.__name__)
-        return "Edit " + self._re2.sub(r'\1 \2', tmp).lower()
+        return "Edit " + self.header().lower()
+
+    def header_delete(self):
+        return "Delete " + self.header().lower()
+
+    def url(self):
+        tmp = self._re1.sub(r'\1_\2', self.model.__name__)
+        return "manage:" + self._re2.sub(r'\1 \2', tmp).lower()
 
     def url_add(self):
-        tmp = self._re1.sub(r'\1_\2', self.model.__name__)
-        return "manage:" + self._re2.sub(r'\1_\2', tmp).lower() + "_add"
+        return self.url() + "_add"
 
     def url_edit(self):
-        tmp = self._re1.sub(r'\1_\2', self.model.__name__)
-        return "manage:" + self._re2.sub(r'\1_\2', tmp).lower() + "_edit"
+        return self.url() + "_edit"
+
+    def url_delete(self):
+        return self.url() + "_delete"
 
 
 def _view(request, model, tForm):
     class ViewItem:
-        def __init__(self, url, data):
-            self.url = url
+        def __init__(self, url_edit, url_delete, data):
+            self.url_edit = url_edit
+            self.url_delete = url_delete
             self.data = data
 
     form = tForm()
@@ -66,9 +76,10 @@ def _view(request, model, tForm):
 
     items = []
     for it in model.objects.all():
-        url = reverse(meta_model.url_edit(), args=[it.id])
+        url_edit = reverse(meta_model.url_edit(), args=[it.id])
+        url_delete = reverse(meta_model.url_delete(), args=[it.id])
         data = tuple(getattr(it, field) for field in form.fields.keys())
-        items.append(ViewItem(url, data))
+        items.append(ViewItem(url_edit, url_delete, data))
 
     params = {'items': items,
               'action_add': reverse(meta_model.url_add()),
@@ -84,25 +95,41 @@ def _process(request, action, id, model, widgets):
     if action == 'list':
         return _view(request, model, tForm)
 
-    if id:
+    if action == 'edit':
         inst = get_object_or_404(model, pk=id)
-        action = reverse(meta_model.url_edit(), args=[id])
+        action_url = reverse(meta_model.url_edit(), args=[id])
         header = meta_model.header_edit()
+        action_btn = "Save"
+    elif action == 'delete':
+        inst = get_object_or_404(model, pk=id)
+        action_url = reverse(meta_model.url_delete(), args=[id])
+        header = meta_model.header_delete()
+        action_btn = "Delete"
     else:
         inst = model()
-        action = reverse(meta_model.url_add())
+        action_url = reverse(meta_model.url_add())
         header = meta_model.header_add()
+        action_btn = "Save"
 
     if request.method == 'POST':
+        if action == 'delete':
+            inst.delete()
+            return HttpResponseRedirect(reverse('manage:index'))
         form = tForm(request.POST, instance=inst)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('manage:index'))
     else:
         form = tForm(instance=inst)
+        if action == 'delete':
+            for it in form.fields.values():
+                it.widget.attrs['disabled'] = 'disabled'
 
-    return render(request, 'manage/form_edit_add.html',
-                  {'form': form, 'action': action, 'header': header})
+    params = {'form': form,
+              'action': action_url,
+              'header': header,
+              'action_btn': action_btn}
+    return render(request, 'manage/form_edit_add.html', params)
 
 
 @ajax

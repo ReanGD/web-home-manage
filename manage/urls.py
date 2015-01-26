@@ -3,7 +3,8 @@ from django.conf.urls import patterns, url
 from manage import views, forms
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.index,
+        {}, 'index'),
 
     url(r'^torrent/list/(?P<id>\d+)$', views.torrent,
         {}, 'torrent_list'),

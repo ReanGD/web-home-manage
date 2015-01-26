@@ -63,6 +63,10 @@ class MetaModel(object):
     def url_delete(self):
         return self.url() + "_delete"
 
+    def tab_id(self):
+        tmp = self._re1.sub(r'\1_\2', self.model.__name__)
+        return "id_" + self._re2.sub(r'\1_\2', tmp).lower()
+
 
 def _view(request, model, tForm):
     class ViewItem:
@@ -81,6 +85,7 @@ def _view(request, model, tForm):
         data = tuple(getattr(it, field) for field in form.fields.keys())
         items.append(ViewItem(url_edit, url_delete, data))
 
+    request.session['tabid'] = meta_model.tab_id()
     params = {'items': items,
               'action_add': reverse(meta_model.url_add()),
               'labels': [it.label for it in form.fields.values()],
@@ -112,13 +117,14 @@ def _process(request, action, id, model, widgets):
         action_btn = "Save"
 
     if request.method == 'POST':
+        url = reverse('manage:index')
         if action == 'delete':
             inst.delete()
-            return HttpResponseRedirect(reverse('manage:index'))
+            return HttpResponseRedirect(url)
         form = tForm(request.POST, instance=inst)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('manage:index'))
+            return HttpResponseRedirect(url)
     else:
         form = tForm(instance=inst)
         if action == 'delete':

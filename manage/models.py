@@ -46,4 +46,4 @@ class TorrentFile(models.Model):
     path = models.TextField(unique=False)
 
     def __unicode__(self):
-        return "%s: %s" % (self.job_ptr.name, self.name)
+        return "%s: %s" % (self.torent_ptr.name, self.path)

@@ -47,3 +47,22 @@ class TorrentFile(models.Model):
 
     def __unicode__(self):
         return "%s: %s" % (self.torent_ptr.name, self.path)
+
+
+class LoadLog(models.Model):
+    RES_PROGRESS = 0
+    RES_SUCCESS = 1
+    RES_FAILED = 2
+    RESULT_CHOICES = (
+        (RES_PROGRESS, 'Progress'),
+        (RES_SUCCESS, 'Success'),
+        (RES_FAILED, 'Failed'),
+    )
+    result = models.IntegerField(default=RES_PROGRESS, choices=RESULT_CHOICES)
+    torent_ptr = models.ForeignKey(Torrent, null=True, verbose_name="Torrent")
+    text = models.TextField(unique=False)
+
+    def __unicode__(self):
+        return "%s: %s" % (self.torent_ptr.name,
+                           self.text,
+                           LoadLog.RESULT_CHOICES[self.result][1])

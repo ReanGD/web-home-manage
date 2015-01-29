@@ -35,4 +35,13 @@ urlpatterns = patterns('',
         {'action': 'edit'}, name='storage_map_edit'),
     url(r'^storage_map/delete/(?P<id>\d+)$', forms.storage_map,
         {'action': 'delete'}, name='storage_map_delete'),
+
+    url(r'^settings/list/$', forms.settings,
+        {'action': 'list'}, 'settings_list'),
+    url(r'^settings/add/$', forms.settings,
+        {'action': 'add'}, 'settings_add'),
+    url(r'^settings/edit/(?P<id>\d+)$', forms.settings,
+        {'action': 'edit'}, name='settings_edit'),
+    url(r'^settings/delete/(?P<id>\d+)$', forms.settings,
+        {'action': 'delete'}, name='settings_delete'),
 )

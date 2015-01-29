@@ -9,7 +9,7 @@ from django.forms import TextInput, Select, NumberInput
 from django.forms.models import modelform_factory
 from django_ajax.decorators import ajax
 
-from manage.models import LocalStorage, RemoteStorage, StorageMap
+from manage.models import LocalStorage, RemoteStorage, StorageMap, Settings
 
 
 def _text_input_widget(placeholder):
@@ -159,3 +159,10 @@ def storage_map(request, action, id=None):
                'remote_ptr': _select_widget(),
                'min_ratio': _number_widget(0.0, 2.0, 0.1)}
     return _process(request, action, id, StorageMap, widgets)
+
+
+@ajax
+def settings(request, action, id=None):
+    widgets = {'name': _text_input_widget('ip'),
+               'value': _text_input_widget('192.168.1.1')}
+    return _process(request, action, id, Settings, widgets)

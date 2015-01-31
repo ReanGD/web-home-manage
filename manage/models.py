@@ -49,6 +49,14 @@ class TorrentFile(models.Model):
         return "%s: %s" % (self.torent_ptr.name, self.path)
 
 
+class Settings(models.Model):
+    name = models.CharField(max_length=50, unique=True, null=False)
+    value = models.CharField(max_length=255, unique=False, null=False)
+
+    def __unicode__(self):
+        return "%s = %s" % (self.name, self.value)
+
+
 class LoadLog(models.Model):
     RES_PROGRESS = 0
     RES_SUCCESS = 1
@@ -61,6 +69,7 @@ class LoadLog(models.Model):
     result = models.IntegerField(default=RES_PROGRESS, choices=RESULT_CHOICES)
     torent_ptr = models.ForeignKey(Torrent, null=True, verbose_name="Torrent")
     text = models.TextField(unique=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return "%s: %s" % (self.torent_ptr.name,

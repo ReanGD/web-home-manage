@@ -9,7 +9,7 @@ from django.forms import TextInput, Select, NumberInput
 from django.forms.models import modelform_factory
 from django_ajax.decorators import ajax
 
-from manage.models import LocalStorage, RemoteStorage, StorageMap, Settings
+from manage.models import LocalStorage, RemoteStorage, StorageMap, Setting
 
 
 def _text_input_widget(placeholder):
@@ -90,7 +90,7 @@ def _view(request, model, tForm):
               'action_add': reverse(meta_model.url_add()),
               'labels': [it.label for it in form.fields.values()],
               'header': meta_model.header_list()}
-    return render(request, 'manage/settings_view.html', params)
+    return render(request, 'manage/setting_view.html', params)
 
 
 def _process(request, action, id, model, widgets):
@@ -135,7 +135,7 @@ def _process(request, action, id, model, widgets):
               'action': action_url,
               'header': header,
               'action_btn': action_btn}
-    return render(request, 'manage/settings_form.html', params)
+    return render(request, 'manage/setting_form.html', params)
 
 
 @ajax
@@ -162,7 +162,7 @@ def storage_map(request, action, id=None):
 
 
 @ajax
-def settings(request, action, id=None):
+def setting(request, action, id=None):
     widgets = {'name': _text_input_widget('ip'),
                'value': _text_input_widget('192.168.1.1')}
-    return _process(request, action, id, Settings, widgets)
+    return _process(request, action, id, Setting, widgets)

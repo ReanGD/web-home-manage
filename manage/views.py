@@ -10,7 +10,10 @@ def index(request):
     items = StorageMap.objects.all()
     tabid = request.session.get('tabid', None)
     if tabid is None:
-        tabid = "id_%i" % items[0].id
+        if len(items) == 0:
+            tabid = "id_local_storage"
+        else:
+            tabid = "id_%i" % items[0].id
     return render(request, 'manage/index.html',
                   {'items': items, 'load_tab': tabid})
 

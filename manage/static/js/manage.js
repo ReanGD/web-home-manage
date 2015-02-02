@@ -10,10 +10,18 @@ function load_form(e, self)
   });
 }
 
+function run_sync(e)
+{
+  ajaxGet($(this).attr('url'), function(content){
+      alert(content['text']);
+  });  
+}
+
 function init(e, default_tab)
 {
   load_form(e, default_tab);
   $('#mainmenu>li>a').click(load_form);
+  $('#id_run_sync').click(run_sync);  
   $('#index').click(function(e){load_form(e, $('#mainmenu>li>a:first'));});
 
   $(document).on('submit', '#id_form_add_edit', function(){

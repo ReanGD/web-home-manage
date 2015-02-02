@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, url
 
-from manage import views, forms
+from manage import views, forms, actions
 
 urlpatterns = patterns('',
     url(r'^$', views.index,
         {}, 'index'),
+
+    url(r'^run_sync/$', actions.run_sync,
+        {}, 'run_sync'),
 
     url(r'^torrent/list/(?P<id>\d+)$', views.torrent,
         {}, 'torrent_list'),
@@ -36,12 +39,12 @@ urlpatterns = patterns('',
     url(r'^storage_map/delete/(?P<id>\d+)$', forms.storage_map,
         {'action': 'delete'}, name='storage_map_delete'),
 
-    url(r'^settings/list/$', forms.settings,
-        {'action': 'list'}, 'settings_list'),
-    url(r'^settings/add/$', forms.settings,
-        {'action': 'add'}, 'settings_add'),
-    url(r'^settings/edit/(?P<id>\d+)$', forms.settings,
-        {'action': 'edit'}, name='settings_edit'),
-    url(r'^settings/delete/(?P<id>\d+)$', forms.settings,
-        {'action': 'delete'}, name='settings_delete'),
+    url(r'^setting/list/$', forms.setting,
+        {'action': 'list'}, 'setting_list'),
+    url(r'^setting/add/$', forms.setting,
+        {'action': 'add'}, 'setting_add'),
+    url(r'^setting/edit/(?P<id>\d+)$', forms.setting,
+        {'action': 'edit'}, name='setting_edit'),
+    url(r'^setting/delete/(?P<id>\d+)$', forms.setting,
+        {'action': 'delete'}, name='setting_delete'),
 )

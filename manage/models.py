@@ -32,7 +32,7 @@ class StorageMap(models.Model):
 
 
 class Torrent(models.Model):
-    storage_map_ptr = models.ForeignKey(LocalStorage,
+    storage_map_ptr = models.ForeignKey(StorageMap,
                                         verbose_name="Storage map")
     name = models.TextField(unique=False)
     idhash = models.CharField("Hash", max_length=40, unique=True, db_index=True)
@@ -49,7 +49,7 @@ class TorrentFile(models.Model):
         return "%s: %s" % (self.torent_ptr.name, self.path)
 
 
-class Settings(models.Model):
+class Setting(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False)
     value = models.CharField(max_length=255, unique=False, null=False)
 
@@ -61,17 +61,20 @@ class LoadLog(models.Model):
     RES_PROGRESS = 0
     RES_SUCCESS = 1
     RES_FAILED = 2
+    RES_NOT_FOUND = 3
     RESULT_CHOICES = (
         (RES_PROGRESS, 'Progress'),
         (RES_SUCCESS, 'Success'),
         (RES_FAILED, 'Failed'),
+        (RES_NOT_FOUND, 'Not found'),
     )
     result = models.IntegerField(default=RES_PROGRESS, choices=RESULT_CHOICES)
-    torent_ptr = models.ForeignKey(Torrent, null=True, verbose_name="Torrent")
+    torent_ptr = models.ForeignKey(Torrent, unique=False, null=True,
+                                   verbose_name="Torrent")
     text = models.TextField(unique=False)
     created = models.DateTimeField(auto_now_add=True)
+    finished = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return "%s: %s" % (self.torent_ptr.name,
-                           self.text,
+        return "%s: %s" % (self.text,
                            LoadLog.RESULT_CHOICES[self.result][1])

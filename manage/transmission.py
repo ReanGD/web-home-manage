@@ -1,0 +1,129 @@
+import os
+import shutil
+import transmissionrpc
+
+from manage.models import Torrent, TorrentFile, StorageMap, Setting
+
+
+def _remove_file(path):
+    if os.path.isfile(path):
+        os.remove(path)
+
+
+def _create_dir(path):
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    if not os.path.isdir(path):
+        raise RuntimeError("can't create dir %s" % path)
+
+
+def _copy_file(in_path, out_path):
+    if not os.path.isfile(in_path):
+        raise RuntimeError("can't find torrent path %s" % in_path)
+    _remove_file(out_path)
+    if os.path.isfile(out_path):
+        raise RuntimeError("can't remove old file %s" % out_path)
+    _create_dir(os.path.dirname(out_path))
+    shutil.copy2(in_path, out_path)
+
+
+class Transmission(object):
+    def __init__(self, log):
+        self.client = None
+        self.log = log
+
+    def get_setting(self, name):
+        return str(Setting.objects.get(name__exact=name).value)
+
+    def connect(self):
+        try:
+            address = self.get_setting("SRV_IP")
+            port = int(self.get_setting("SRV_PORT"))
+            user = self.get_setting("SRV_USER")
+            password = self.get_setting("SRV_PASS")
+            msg = "conect to %s:%i (%s/%s)" % (address, port, user, password)
+            self.log.write(msg)
+            self.client = transmissionrpc.Client(address, port, user, password)
+        except Exception, e:
+            self.log.write("can't connect")
+            raise e
+
+    def find_torrent(self):
+        dir_map = {}
+        srv_path = self.get_setting("SRV_PATH")
+        for it in StorageMap.objects.all():
+            remote = os.path.join(srv_path, it.remote_ptr.path)
+            dir_map[remote] = it
+
+        for torrent in self.client.get_torrents():
+            if torrent.downloadDir not in dir_map:
+                continue
+            storage_map = dir_map[torrent.downloadDir]
+            if torrent.uploadRatio < storage_map.min_ratio:
+                continue
+            is_valid = True
+            for file_it in torrent.files().values():
+                if file_it["selected"]:
+                    if file_it["completed"] != file_it["size"]:
+                        is_valid = False
+                        break
+            if not is_valid:
+                continue
+            if Torrent.objects.filter(idhash=torrent.hashString).exists():
+                continue
+
+            return torrent
+
+        return None
+
+    def _copy_file(self, in_path, out_path):
+        try:
+            self.log.write("start copy file from \"%s\" to \"%s\""
+                           % (in_path, out_path))
+            _copy_file(in_path, out_path)
+            self.log.write("finish copy file from \"%s\" to \"%s\""
+                           % (in_path, out_path))
+        except Exception, e:
+            self.log.write("can't copy file from \"%s\" to \"%s\""
+                           % (in_path, out_path))
+            raise e
+
+    def _copy_files(self, files, in_dir, out_dir):
+        write_files = []
+        try:
+            for it in files:
+                in_path = os.path.join(in_dir, it["name"])
+                out_path = os.path.join(out_dir, it["name"])
+                self._copy_file(in_path, out_path)
+                write_files.append(out_path)
+            return write_files
+        except Exception, e:
+            for it in write_files:
+                _remove_file(it)
+            raise e
+
+    def _unsafe_copy_torrent(self, torrent, src_path, trg_path):
+        srv_path = self.get_setting("SRV_PATH")
+        relpath = os.path.relpath(torrent.downloadDir, srv_path)
+        in_dir = os.path.join(src_path, relpath)
+        smap = StorageMap.objects.get(remote_ptr__path=relpath)
+        out_dir = os.path.join(trg_path, smap.local_ptr.path)
+        files = [it for it in torrent.files().values() if it["selected"]]
+        write_files = self._copy_files(files, in_dir, out_dir)
+        t = Torrent.objects.create(storage_map_ptr=smap,
+                                   name=torrent.name,
+                                   idhash=torrent.hashString)
+        self.log.set_torrent(t)
+        for it in write_files:
+            TorrentFile.objects.create(torent_ptr=t, path=it)
+
+    def copy_torrent(self, torrent):
+        try:
+            src_path = self.get_setting("LOC_SRC_PATH")
+            trg_path = self.get_setting("LOC_TRG_PATH")
+            self.log.write("start download torrent \"%s\"" % torrent.name)
+            self._unsafe_copy_torrent(torrent, src_path, trg_path)
+            self.log.write("finish download torrent \"%s\"" % torrent.name)
+        except Exception, e:
+            self.log.write("can't copy torrent")
+            raise e

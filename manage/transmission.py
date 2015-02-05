@@ -36,6 +36,8 @@ class Transmission(object):
         return str(Setting.objects.get(name__exact=name).value)
 
     def connect(self):
+        if self.client is not None:
+            return
         try:
             address = self.get_setting("SRV_IP")
             port = int(self.get_setting("SRV_PORT"))
@@ -49,6 +51,7 @@ class Transmission(object):
             raise e
 
     def find_torrent(self):
+        self.connect()
         dir_map = {}
         srv_path = self.get_setting("SRV_PATH")
         for it in StorageMap.objects.all():
@@ -127,3 +130,61 @@ class Transmission(object):
         except Exception, e:
             self.log.write("can't copy torrent")
             raise e
+
+    def _remove_torrent_file(self, file_rec):
+        try:
+            self.log.write("start remove file \"%s\"" % file_rec.path)
+            _remove_file(file_rec.path)
+            file_rec.delete()
+            self.log.write("finish remove file \"%s\"" % file_rec.path)
+        except Exception, e:
+            self.log.write("can't remove file")
+            raise e
+
+    def _remove_torrent_files(self, torrent_rec):
+        try:
+            self.log.write("start remove files for torrent \"%s\"" %
+                           torrent_rec.name)
+            for it in TorrentFile.objects.filter(torrent_ptr=torrent_rec):
+                self._remove_torrent_file(it)
+            self.log.write("finish remove files for torrent \"%s\"" %
+                           torrent_rec.name)
+        except Exception, e:
+            self.log.write("can't remove torrent files")
+            raise e
+
+    def _remove_torrent_srv(self, torrent_rec):
+        try:
+            self.log.write("start remove torrent \"%s\" from server" %
+                           torrent_rec.name)
+            self.connect()
+            for torrent in self.client.get_torrents():
+                if torrent.hashString == torrent_rec.idhash:
+                    self.client.remove_torrent(torrent.id, True)
+                    self.log.remove_torrent()
+                    torrent_rec.delete()
+                    break
+            self.log.write("finish remove torrent \"%s\" from server" %
+                           torrent_rec.name)
+        except Exception, e:
+            self.log.write("can't remove torrent from server")
+            raise e
+
+    def _remove_torrent(self, torrent_rec):
+        try:
+            self.log.write("start remove torrent \"%s\"" %
+                           torrent_rec.name)
+            self._remove_torrent_files(torrent_rec)
+            self._remove_torrent_srv(torrent_rec)
+            self.log.write("finish remove torrent \"%s\"" %
+                           torrent_rec.name)
+        except Exception, e:
+            self.log.write("can't remove torrent")
+            raise e
+
+    def remove_torrent(self, torrent_rec, file_only):
+        self.log.set_torrent(torrent_rec)
+        if file_only:
+            self._remove_torrent_files(torrent_rec)
+        else:
+            self._remove_torrent(torrent_rec)

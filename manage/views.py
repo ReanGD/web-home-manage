@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django_ajax.decorators import ajax
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from manage.models import StorageMap, Torrent, TorrentFile
 
@@ -20,7 +20,7 @@ def index(request):
 
 @ajax
 def torrent(request, id):
-    storage_map = StorageMap.objects.get(pk=id)
+    storage_map = get_object_or_404(StorageMap, pk=id)
     header = storage_map.local_ptr.name + ":"
     request.session['tabid'] = "id_%i" % storage_map.id
 

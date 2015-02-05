@@ -14,7 +14,6 @@ def run_sync_task(arguments):
     log = db_logger.DbLogger(arguments['log_id'])
     try:
         tr = transmission.Transmission(log)
-        tr.connect()
         torrent = tr.find_torrent()
         if torrent is not None:
             tr.copy_torrent(torrent)

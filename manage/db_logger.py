@@ -8,6 +8,12 @@ class DbLogger(object):
         else:
             self.rec = LoadLog.objects.get(pk=int(rec_id))
 
+    def remove_torrent(self):
+        if self.rec.torent_ptr is not None:
+            for it in LoadLog.objects.filter(torent_ptr=self.rec.torent_ptr):
+                it.torent_ptr = None
+                it.save()
+
     def id(self):
         return self.rec.id
 

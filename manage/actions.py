@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-import sys
-import traceback
 import transmission
 import db_logger
 from django_ajax.decorators import ajax
@@ -22,10 +20,7 @@ def run_sync_task(arguments):
             log.write("not found torrent for download")
             log.set_result(LoadLog.RES_NOT_FOUND)
     except Exception:
-        e_type, e_value, e_traceback = sys.exc_info()
-        for line in traceback.format_exception(e_type, e_value, e_traceback):
-            log.write(line)
-        log.set_result(LoadLog.RES_FAILED)
+        log.exception()
 
 
 @ajax
@@ -37,3 +32,12 @@ def run_sync(request):
     time.sleep(5)
     log = db_logger.DbLogger(log_id)
     return {'log_id': log.id(), 'text': log.text()}
+
+
+def delete_torrent(torrent_rec, file_only):
+    log = db_logger.DbLogger()
+    try:
+        tr = transmission.Transmission(log)
+        tr.remove_torrent(torrent_rec, file_only)
+    except Exception:
+        log.exception()

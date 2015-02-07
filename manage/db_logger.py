@@ -1,3 +1,5 @@
+import sys
+import traceback
 from manage.models import LoadLog
 
 
@@ -31,3 +33,9 @@ class DbLogger(object):
     def set_torrent(self, t):
         self.torent_ptr = t
         self.rec.save()
+
+    def exception(self):
+        e_type, e_value, e_traceback = sys.exc_info()
+        s = "\n".join(traceback.format_exception(e_type, e_value, e_traceback))
+        self.write(s)
+        self.set_result(LoadLog.RES_FAILED)

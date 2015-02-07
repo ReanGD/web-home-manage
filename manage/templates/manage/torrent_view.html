@@ -17,7 +17,12 @@
       <td>{{ it.idhash }}</td>
       <td>
         <div class="container-fluid btn-group">
-          <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
+          <button type="button" class="btn-form btn btn-default btn-xs" url="{{it.url_delete}}" data-toggle="tooltip" data-placement="top" title="Remove torrent">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+          <button type="button" class="btn-form btn btn-default btn-xs" url="{{it.url_delete_files}}" data-toggle="tooltip" data-placement="top" title="Remove files">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
         </div>
       </td>
     </tr>
@@ -36,3 +41,4 @@
     </tbody>
   </table>
 </div>
+<div class="modal fade" id="dlg" tabindex="-1" aria-hidden="true"></div>

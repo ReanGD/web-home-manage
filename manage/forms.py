@@ -9,10 +9,11 @@ from django.forms import TextInput, Select, NumberInput
 from django.forms.models import modelform_factory
 from django_ajax.decorators import ajax
 
-from manage.models import LocalStorage, RemoteStorage, StorageMap, Setting
+from manage.actions import delete_torrent
+from manage.models import LocalStorage, RemoteStorage, StorageMap, Setting, Torrent
 
 
-def _text_input_widget(placeholder):
+def _text_input_widget(placeholder=''):
     return TextInput(attrs={'placeholder': placeholder,
                             'class': 'form-control'})
 
@@ -166,3 +167,36 @@ def setting(request, action, id=None):
     widgets = {'name': _text_input_widget('ip'),
                'value': _text_input_widget('192.168.1.1')}
     return _process(request, action, id, Setting, widgets)
+
+
+@ajax
+def torrent(request, action, id):
+    widgets = {'storage_map_ptr': _select_widget(),
+               'name': _text_input_widget(),
+               'idhash': _text_input_widget()}
+    tForm = modelform_factory(Torrent, widgets=widgets)
+
+    inst = get_object_or_404(Torrent, pk=id)
+    if action == 'delete':
+        action_url = reverse('manage:torrent_delete', args=[id])
+        header = "Delete torrent and files"
+        action_btn = "Delete torrent and files"
+    else:
+        action_url = reverse('manage:torrent_delete_files', args=[id])
+        header = "Delete files"
+        action_btn = "Delete files"
+
+    if request.method == 'POST':
+        file_only = (action != 'delete')
+        delete_torrent(inst, file_only)
+        return HttpResponseRedirect(reverse('manage:index'))
+    else:
+        form = tForm(instance=inst)
+        for it in form.fields.values():
+            it.widget.attrs['disabled'] = 'disabled'
+
+    params = {'form': form,
+              'action': action_url,
+              'header': header,
+              'action_btn': action_btn}
+    return render(request, 'manage/setting_form.html', params)

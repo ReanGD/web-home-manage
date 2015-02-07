@@ -33,7 +33,7 @@ class StorageMap(models.Model):
 
 class Torrent(models.Model):
     storage_map_ptr = models.ForeignKey(StorageMap,
-                                        verbose_name="Storage map")
+                                        verbose_name="Storage")
     name = models.TextField(unique=False)
     idhash = models.CharField("Hash", max_length=40, unique=True, db_index=True)
 

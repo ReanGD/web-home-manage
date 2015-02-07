@@ -11,6 +11,10 @@ urlpatterns = patterns('',
 
     url(r'^torrent/list/(?P<id>\d+)$', views.torrent,
         {}, 'torrent_list'),
+    url(r'^torrent/delete/(?P<id>\d+)$', forms.torrent,
+        {'action': 'delete'}, 'torrent_delete'),
+    url(r'^torrent/delete_files/(?P<id>\d+)$', forms.torrent,
+        {'action': 'delete_files'}, 'torrent_delete_files'),
 
     url(r'^local_storage/list/$', forms.local_storage,
         {'action': 'list'}, 'local_storage_list'),

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django_ajax.decorators import ajax
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 
 from manage.models import StorageMap, Torrent, TorrentFile
@@ -8,12 +9,11 @@ from manage.models import StorageMap, Torrent, TorrentFile
 
 def index(request):
     items = StorageMap.objects.all()
-    tabid = request.session.get('tabid', None)
-    if tabid is None:
-        if len(items) == 0:
-            tabid = "id_local_storage"
-        else:
-            tabid = "id_%i" % items[0].id
+    if len(items) == 0:
+        tabid = "id_local_storage"
+    else:
+        tabid = "id_%i" % items[0].id
+    tabid = request.session.get('tabid', tabid)
     return render(request, 'manage/index.html',
                   {'items': items, 'load_tab': tabid})
 
@@ -27,6 +27,9 @@ def torrent(request, id):
     items = Torrent.objects.filter(storage_map_ptr=id)
     for it in items:
         it.files = TorrentFile.objects.filter(torent_ptr=it)
+        it.url_delete = reverse('manage:torrent_delete', args=[it.id])
+        it.url_delete_files = reverse('manage:torrent_delete_files',
+                                      args=[it.id])
 
     return render(request, 'manage/torrent_view.html',
                   {'items': items, 'header': header})

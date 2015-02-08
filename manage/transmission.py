@@ -145,7 +145,7 @@ class Transmission(object):
         try:
             self.log.write("start remove files for torrent \"%s\"" %
                            torrent_rec.name)
-            for it in TorrentFile.objects.filter(torrent_ptr=torrent_rec):
+            for it in TorrentFile.objects.filter(torent_ptr=torrent_rec):
                 self._remove_torrent_file(it)
             self.log.write("finish remove files for torrent \"%s\"" %
                            torrent_rec.name)

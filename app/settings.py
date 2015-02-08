@@ -51,12 +51,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_ENV_MYSQL_DATABASE', 'db'),
-        'USER': os.environ.get('DB_ENV_MYSQL_USER', 'admin'),
-        'PASSWORD': os.environ.get('DB_ENV_MYSQL_PASSWORD', 'admin'),
-        'HOST': os.environ.get('DB_PORT_3306_TCP_ADDR', '172.17.0.1'),
-        'PORT': os.environ.get('DB_PORT_3306_TCP_PORT', '3306'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_ENV_POSTGRES_USER', 'postgres'),
+        'USER': os.environ.get('DB_ENV_POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_ENV_POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.environ['DB_PORT_5432_TCP_ADDR'],
+        'PORT': os.environ['DB_PORT_5432_TCP_PORT'],
     }
 }
 

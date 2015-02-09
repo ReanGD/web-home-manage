@@ -6,8 +6,6 @@ urlpatterns = patterns('',
     url(r'^$', views.index,
         {}, 'index'),
 
-    url(r'^run_sync/$', actions.run_sync,
-        {}, 'run_sync'),
     url(r'^run_sync_get/$', actions.run_sync_get,
         {}, 'run_sync_get'),
 

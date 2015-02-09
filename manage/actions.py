@@ -4,7 +4,6 @@ import json
 import db_logger
 import transmission
 
-from django_ajax.decorators import ajax
 from django.http import HttpResponse
 
 from uwsgidecorators import spool
@@ -25,14 +24,6 @@ def run_sync_task(arguments):
             log.set_result(LoadLog.RES_NOT_FOUND)
     except Exception:
         log.exception()
-
-
-@ajax
-def run_sync(request):
-    log = db_logger.DbLogger()
-    log_id = str(log.id())
-    run_sync_task.spool({'log_id': log_id})
-    return {'id': log_id}
 
 
 def run_sync_get(request):

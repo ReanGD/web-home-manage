@@ -59,9 +59,13 @@ class Transmission(object):
             dir_map[remote] = it
 
         for torrent in self.client.get_torrents():
-            if torrent.downloadDir not in dir_map:
+            storage_map = None
+            for it in dir_map:
+                if torrent.downloadDir in it:
+                    storage_map = dir_map[it]
+                    break
+            if storage_map is None:
                 continue
-            storage_map = dir_map[torrent.downloadDir]
             if torrent.uploadRatio < storage_map.min_ratio:
                 continue
             is_valid = True

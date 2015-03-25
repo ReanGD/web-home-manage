@@ -113,7 +113,12 @@ class Transmission(object):
         srv_path = self.get_setting("SRV_PATH")
         relpath = os.path.relpath(torrent.downloadDir, srv_path)
         in_dir = os.path.join(src_path, relpath)
-        smap = StorageMap.objects.get(remote_ptr__path=relpath)
+        smap = None
+        for it in StorageMap.objects.all():
+            if(it.remote_ptr.path in torrent.downloadDir):
+                smap = it
+        if smap is None:
+            raise RuntimeError("can't find %s in StorageMap" % torrent.downloadDir)
         out_dir = os.path.join(trg_path, smap.local_ptr.path)
         files = [it for it in torrent.files().values() if it["selected"]]
         write_files = self._copy_files(files, in_dir, out_dir)

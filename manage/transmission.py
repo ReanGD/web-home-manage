@@ -109,7 +109,7 @@ class Transmission(object):
                 _remove_file(it)
             raise e
 
-    def global_unsafe_copy_torrent(self, torrent, src_path, trg_path):
+    def _unsafe_copy_torrent(self, torrent, src_path, trg_path):
         srv_path = self.get_setting("SRV_PATH")
         relpath = os.path.relpath(torrent.downloadDir, srv_path)
         in_dir = os.path.join(src_path, relpath)

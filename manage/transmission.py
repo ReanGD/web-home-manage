@@ -61,7 +61,7 @@ class Transmission(object):
         for torrent in self.client.get_torrents():
             storage_map = None
             for it in dir_map:
-                if len(torrent.downloadDir) > 1 and torrent.downloadDir in it:
+                if len(torrent.downloadDir) > 1 and it in torrent.downloadDir:
                     storage_map = dir_map[it]
                     break
             if storage_map is None:

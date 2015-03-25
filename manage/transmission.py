@@ -109,7 +109,7 @@ class Transmission(object):
                 _remove_file(it)
             raise e
 
-    def _unsafe_copy_torrent(self, torrent, src_path, trg_path):
+    def global_unsafe_copy_torrent(self, torrent, src_path, trg_path):
         srv_path = self.get_setting("SRV_PATH")
         relpath = os.path.relpath(torrent.downloadDir, srv_path)
         in_dir = os.path.join(src_path, relpath)
@@ -120,6 +120,9 @@ class Transmission(object):
         if smap is None:
             raise RuntimeError("can't find %s in StorageMap" % torrent.downloadDir)
         out_dir = os.path.join(trg_path, smap.local_ptr.path)
+        end_path = os.path.relpath(relpath, smap.remote_ptr.path)
+        if end_path != ".":
+            out_dir = os.path.join(out_dir, end_path)
         files = [it for it in torrent.files().values() if it["selected"]]
         write_files = self._copy_files(files, in_dir, out_dir)
         t = Torrent.objects.create(storage_map_ptr=smap,

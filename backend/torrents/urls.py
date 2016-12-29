@@ -3,6 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from torrents import views
 
 urlpatterns = [
+    url(r'^torrents/$', views.RemoteTorrentList.as_view()),
     url(r'^torrents/$', views.TorrentList.as_view()),
 ]
 

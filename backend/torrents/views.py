@@ -1,26 +1,23 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
-from rest_framework_swagger import renderers
-from torrents.models import Torrent
 from rest_framework import viewsets
-from torrents.serializers import TorrentSerializer
-import transmissionrpc
+from rest_framework.generics import GenericAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework_swagger import renderers
+from torrents.models import RemoteTorrent, Torrent
+from torrents.serializers import RemoteTorrentSerializer, TorrentSerializer
+
+
+# class RemoteTorrentList(APIView, GenericAPIView):
+#     def get(self, request, format=None):
+#         RemoteTorrent.sync()
+#         remote_torrents = RemoteTorrent.objects.all()
+#         serializer = RemoteTorrentSerializer(remote_torrents, many=True)
+#         return Response(serializer.data)
+class RemoteTorrentList(viewsets.ReadOnlyModelViewSet):
+    queryset = RemoteTorrent.objects.all()
+    serializer_class = RemoteTorrentSerializer
+
 
 class TorrentList(viewsets.ModelViewSet):
-    # class TorrentList(APIView):
     queryset = Torrent.objects.all()
     serializer_class = TorrentSerializer
-
-    # def get(self, request, format=None):
-    #     snippets = Torrent.objects.all()
-    #     serializer = TorrentSerializer(snippets, many=True)
-    #     return Response(serializer.data)
-    #
-    # def post(self, request, format=None):
-    #     serializer = TorrentSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

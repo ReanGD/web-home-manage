@@ -1,8 +1,14 @@
 from rest_framework import serializers
-from torrents.models import Torrent
+import torrents.models
+
+
+class RemoteTorrentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = torrents.models.RemoteTorrent
+        fields = ('id', 'name', 'ratio', 'finished', 'dir', 'files')
 
 
 class TorrentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Torrent
+        model = torrents.models.Torrent
         fields = ('id', 'name')

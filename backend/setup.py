@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='WebHomeManage',
+    name='web-home-manage',
     version='',
     packages=['root', 'torrents', 'torrents.migrations'],
     url='',
@@ -11,7 +11,7 @@ setup(
     description='',
     install_requires=['django==1.10.5',
                       'djangorestframework==3.5.4',
-                      'django-rest-swagger=2.1.1',
+                      'django-rest-swagger==2.1.1',
                       'transmissionrpc==0.11',
                       'pygments']
 )

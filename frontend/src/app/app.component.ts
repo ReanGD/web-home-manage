@@ -1,92 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 
-import { Hero } from './hero';
-import { HeroService } from './hero.service';
+import { GlobalState } from './global.state';
+import { BaImageLoaderService, BaThemePreloader, BaThemeSpinner } from './theme/services';
+import { BaThemeConfig } from './theme/theme.config';
+import { layoutPaths } from './theme/theme.constants';
 
+import 'style-loader!./app.scss';
+import 'style-loader!./theme/initial.scss';
+
+/*
+ * App Component
+ * Top Level Component
+ */
 @Component({
-  selector: 'my-app',
-  template:`
-    <h1>{{title}}</h1>
-    <h2>My Heroes</h2>
-    <ul class="heroes">
-      <li *ngFor="let hero of heroes"
-        [class.selected]="hero === selectedHero"
-        (click)="onSelect(hero)">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-      </li>
-    </ul>
-    <my-hero-detail [hero]="selectedHero"></my-hero-detail>
-  `,
-  styles: [`
-  .selected {
-    background-color: #CFD8DC !important;
-    color: white;
-  }
-  .heroes {
-    margin: 0 0 2em 0;
-    list-style-type: none;
-    padding: 0;
-    width: 15em;
-  }
-  .heroes li {
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: .3em 0;
-    height: 1.6em;
-    border-radius: 4px;
-  }
-  .heroes li.selected:hover {
-    background-color: #BBD8DC !important;
-    color: white;
-  }
-  .heroes li:hover {
-    color: #607D8B;
-    background-color: #DDD;
-    left: .1em;
-  }
-  .heroes .text {
-    position: relative;
-    top: -3px;
-  }
-  .heroes .badge {
-    display: inline-block;
-    font-size: small;
-    color: white;
-    padding: 0.8em 0.7em 0 0.7em;
-    background-color: #607D8B;
-    line-height: 1em;
-    position: relative;
-    left: -1px;
-    top: -4px;
-    height: 1.8em;
-    margin-right: .8em;
-    border-radius: 4px 0 0 4px;
-  }  
-`],
-  providers: [HeroService]
+  selector: 'app',
+  template: `
+    <main [ngClass]="{'menu-collapsed': isMenuCollapsed}" baThemeRun>
+      <div class="additional-bg"></div>
+      <router-outlet></router-outlet>
+    </main>
+  `
 })
+export class App {
 
-export class AppComponent  {
-  title = 'Angular';
-  heroes: Hero[];
-  selectedHero: Hero;
+  isMenuCollapsed: boolean = false;
 
-  constructor(private heroService: HeroService) { }
+  constructor(private _state: GlobalState,
+              private _imageLoader: BaImageLoaderService,
+              private _spinner: BaThemeSpinner,
+              private viewContainerRef: ViewContainerRef,
+              private themeConfig: BaThemeConfig) {
 
-  getHeroes(): void {
-    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+    themeConfig.config();
+
+    this._loadImages();
+
+    this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
+      this.isMenuCollapsed = isCollapsed;
+    });
   }
 
-  ngOnInit(): void {
-    this.getHeroes();
+  public ngAfterViewInit(): void {
+    // hide spinner once all loaders are completed
+    BaThemePreloader.load().then((values) => {
+      this._spinner.hide();
+    });
   }
 
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
+  private _loadImages(): void {
+    // register some loaders
+    BaThemePreloader.registerLoader(this._imageLoader.load(layoutPaths.images.root + 'sky-bg.jpg'));
   }
+
 }
-
-

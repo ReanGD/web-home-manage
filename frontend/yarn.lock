@@ -839,10 +839,6 @@ cipher-base@^1.0.0, cipher-base@^1.0.1:
   dependencies:
     inherits "^2.0.1"
 
-ckeditor@4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.6.0.tgz#37cdc988aa22ca6fc67540bb32b6f039a35e7718"
-
 clap@^1.0.9:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/clap/-/clap-1.1.2.tgz#316545bf22229225a2cecaa6824cd2f56a9709ed"
@@ -3446,10 +3442,6 @@ ng2-bootstrap@1.3.3:
   resolved "https://registry.yarnpkg.com/ng2-bootstrap/-/ng2-bootstrap-1.3.3.tgz#2c66781d2e4d4620237bd455250105dab97ee94f"
   dependencies:
     moment "2.17.1"
-
-ng2-ckeditor@1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/ng2-ckeditor/-/ng2-ckeditor-1.1.5.tgz#b2c57f73b3b51bffb5e0dc668beeed049e4add4d"
 
 ng2-completer@1.1.0, ng2-completer@^1.1.0:
   version "1.1.0"

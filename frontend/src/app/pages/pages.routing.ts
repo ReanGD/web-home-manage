@@ -24,8 +24,7 @@ export const routes: Routes = [
       { path: 'charts', loadChildren: 'app/pages/charts/charts.module#ChartsModule' },
       { path: 'ui', loadChildren: 'app/pages/ui/ui.module#UiModule' },
       { path: 'forms', loadChildren: 'app/pages/forms/forms.module#FormsModule' },
-      { path: 'tables', loadChildren: 'app/pages/tables/tables.module#TablesModule' },
-      { path: 'maps', loadChildren: 'app/pages/maps/maps.module#MapsModule' }
+      { path: 'tables', loadChildren: 'app/pages/tables/tables.module#TablesModule' }
     ]
   }
 ];

@@ -37,28 +37,6 @@ export const PAGES_MENU = [
         ]
       },
       {
-        path: 'charts',
-        data: {
-          menu: {
-            title: 'Charts',
-            icon: 'ion-stats-bars',
-            selected: false,
-            expanded: false,
-            order: 200,
-          }
-        },
-        children: [
-          {
-            path: 'chartist-js',
-            data: {
-              menu: {
-                title: 'Chartist.Js',
-              }
-            }
-          }
-        ]
-      },
-      {
         path: 'ui',
         data: {
           menu: {

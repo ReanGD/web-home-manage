@@ -40,7 +40,6 @@ declare var GoogleMapsLoader:any;
 declare var L:any;
 declare var AmCharts:any;
 declare var Chart:any;
-declare var Chartist:any;
 
 // support NodeJS modules without type definitions
 declare module '*';

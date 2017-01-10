@@ -2072,18 +2072,6 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-gh-pages@0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/gh-pages/-/gh-pages-0.12.0.tgz#d951e3ed98b85699d4b0418eb1a15b1a04988dc1"
-  dependencies:
-    async "2.1.2"
-    commander "2.9.0"
-    globby "^6.1.0"
-    graceful-fs "4.1.10"
-    q "1.4.1"
-    q-io "1.13.2"
-    rimraf "^2.5.4"
-
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -5516,32 +5504,6 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typedoc-default-themes@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.4.2.tgz#640b854fd7ef19e6774496ea7741ec31a0dcaddc"
-
-typedoc@0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.5.6.tgz#9e4ec239a6a371ead17843092514d0c68c9271bc"
-  dependencies:
-    "@types/fs-extra" "0.0.33"
-    "@types/handlebars" "^4.0.31"
-    "@types/highlight.js" "^9.1.8"
-    "@types/lodash" "^4.14.37"
-    "@types/marked" "0.0.28"
-    "@types/minimatch" "^2.0.29"
-    "@types/shelljs" "^0.3.32"
-    fs-extra "^2.0.0"
-    handlebars "4.0.5"
-    highlight.js "^9.0.0"
-    lodash "^4.13.1"
-    marked "^0.3.5"
-    minimatch "^3.0.0"
-    progress "^1.1.8"
-    shelljs "^0.7.0"
-    typedoc-default-themes "^0.4.2"
-    typescript "2.1.6"
-
 typescript@2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.0.10.tgz#ccdd4ed86fd5550a407101a0814012e1b3fac3dd"
@@ -5932,35 +5894,6 @@ winston@~2.1.1:
     isstream "0.1.x"
     pkginfo "0.3.x"
     stack-trace "0.0.x"
-
-wintersmith-sassy@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/wintersmith-sassy/-/wintersmith-sassy-1.1.0.tgz#0490914448869c3f633b5441f3c98543cf779ec7"
-  dependencies:
-    node-sass "^3.13.1"
-
-wintersmith@2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/wintersmith/-/wintersmith-2.2.5.tgz#39ff69e4ea9e24e4e610cebe46eab0d7d32253fd"
-  dependencies:
-    async "~1.4.2"
-    chalk "~1.1.1"
-    chokidar "~1.2.0"
-    coffee-script "~1.10.0"
-    highlight.js "~8.9.1"
-    jade "~1.11.0"
-    js-yaml "~3.4.6"
-    marked "~0.3.5"
-    mime "~1.3.4"
-    minimatch "~3.0.0"
-    minimist "~1.2.0"
-    mkdirp "~0.5.1"
-    ncp "~2.0.0"
-    npm "~3.5.2"
-    rimraf "~2.5.0"
-    server-destroy "~1.0.1"
-    slugg "~0.1.2"
-    winston "~2.1.1"
 
 with@~4.0.0:
   version "4.0.3"

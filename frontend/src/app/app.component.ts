@@ -8,6 +8,12 @@ import { layoutPaths } from './theme/theme.constants';
 import 'style-loader!./app.scss';
 import 'style-loader!./theme/initial.scss';
 
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+// import 'style-loader!primeng/resources/themes/cupertino/theme.css';
+import 'style-loader!primeng/resources/primeng.min.css';
+
 /*
  * App Component
  * Top Level Component

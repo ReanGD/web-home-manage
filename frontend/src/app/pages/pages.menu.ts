@@ -15,6 +15,28 @@ export const PAGES_MENU = [
         }
       },
       {
+        path: 'torrents',
+        data: {
+          menu: {
+            title: 'Torrents',
+            icon: 'ion-archive',
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        },
+        children: [
+          {
+            path: 'remoteview',
+            data: {
+              menu: {
+                title: 'Remote View',
+              }
+            }
+          }
+        ]
+      },
+      {
         path: 'components',
         data: {
           menu: {

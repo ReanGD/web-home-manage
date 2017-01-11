@@ -1,0 +1,1 @@
+export * from './remoteView.component';

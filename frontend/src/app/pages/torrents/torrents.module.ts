@@ -1,33 +1,23 @@
-import { NgModule }      from '@angular/core';
-import { CommonModule }  from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NgaModule } from '../../theme/nga.module';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+import {NgModule}      from '@angular/core';
+import {DataTableModule, SharedModule} from 'primeng/primeng';
 
-// import {AccordionModule} from 'primeng/primeng';
-import {DataTableModule,SharedModule} from 'primeng/primeng';
-
-import { routing }       from './torrents.routing';
-import { Tables } from './torrents.component';
-import { BorderedTable } from './components/remoteView/remoteView.component';
-import { BasicTablesService } from './components/remoteView/remoteView.service';
+import {routing} from './torrents.routing';
+import {Torrents} from './torrents.component';
+import {RemoveTorrentsTable} from './components/remoteView/remoteTorrents.component';
+import {RemoteTorrentsService} from './components/remoteView/remoteTorrents.service';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    NgaModule,
     routing,
-    Ng2SmartTableModule,
     DataTableModule,
     SharedModule,
   ],
   declarations: [
-    Tables,
-    BorderedTable,
+    Torrents,
+    RemoveTorrentsTable,
   ],
   providers: [
-    BasicTablesService,
+    RemoteTorrentsService,
   ]
 })
 export class TorrentsModule {

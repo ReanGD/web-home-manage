@@ -1,15 +1,15 @@
 import { Routes, RouterModule }  from '@angular/router';
 
-import { Tables } from './torrents.component';
-import { BorderedTable } from './components/remoteView/remoteView.component';
+import { Torrents } from './torrents.component';
+import { RemoveTorrentsTable } from './components/remoteView/remoteTorrents.component';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
   {
     path: '',
-    component: Tables,
+    component: Torrents,
     children: [
-      { path: 'remoteview', component: BorderedTable }
+      { path: 'remotetorrents', component: RemoveTorrentsTable }
     ]
   }
 ];

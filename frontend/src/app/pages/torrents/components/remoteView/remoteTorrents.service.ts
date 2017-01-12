@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-// import {Car} from '../domain/car';
+// import {RemoteTorrent} from '../domain/car';
 
 
-export interface Car {
+export interface RemoteTorrent {
     vin;
     year;
     brand;
@@ -12,13 +12,13 @@ export interface Car {
 
 
 @Injectable()
-export class BasicTablesService {
+export class RemoteTorrentsService {
 
   constructor(private http: Http) {
   }
 
-  getCarsSmall() {
-    return <Car[]> {
+  getRemoteTorrents() {
+    return <RemoteTorrent[]> {
       "data": [
         {"brand": "VW", "year": 2012, "color": "Orange", "vin": "dsad231ff"},
         {"brand": "Audi", "year": 2011, "color": "Black", "vin": "gwregre345"},
@@ -35,7 +35,7 @@ export class BasicTablesService {
 
     // return this.http.get('/showcase/resources/data/cars-small.json')
     //             .toPromise()
-    //             .then(res => <Car[]> res.json().data)
+    //             .then(res => <RemoteTorrent[]> res.json().data)
     //             .then(data => { return data; });
   }
 }

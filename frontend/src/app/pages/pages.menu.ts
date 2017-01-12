@@ -27,10 +27,10 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'remoteview',
+            path: 'remotetorrents',
             data: {
               menu: {
-                title: 'Remote View',
+                title: 'Remote Torrents',
               }
             }
           }
@@ -146,7 +146,7 @@ export const PAGES_MENU = [
         path: 'tables',
         data: {
           menu: {
-            title: 'Tables',
+            title: 'Torrents',
             icon: 'ion-grid',
             selected: false,
             expanded: false,
@@ -158,7 +158,7 @@ export const PAGES_MENU = [
             path: 'basictables',
             data: {
               menu: {
-                title: 'Basic Tables',
+                title: 'Basic Torrents',
               }
             }
           },
@@ -166,7 +166,7 @@ export const PAGES_MENU = [
             path: 'smarttables',
             data: {
               menu: {
-                title: 'Smart Tables',
+                title: 'Smart Torrents',
               }
             }
           }

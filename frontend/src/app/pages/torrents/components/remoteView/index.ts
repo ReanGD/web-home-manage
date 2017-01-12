@@ -1,1 +1,1 @@
-export * from './remoteView.component';
+export * from './remoteTorrents.component';

@@ -143,36 +143,6 @@ export const PAGES_MENU = [
         ]
       },
       {
-        path: 'tables',
-        data: {
-          menu: {
-            title: 'Torrents',
-            icon: 'ion-grid',
-            selected: false,
-            expanded: false,
-            order: 500,
-          }
-        },
-        children: [
-          {
-            path: 'basictables',
-            data: {
-              menu: {
-                title: 'Basic Torrents',
-              }
-            }
-          },
-          {
-            path: 'smarttables',
-            data: {
-              menu: {
-                title: 'Smart Torrents',
-              }
-            }
-          }
-        ]
-      },
-      {
         path: '',
         data: {
           menu: {

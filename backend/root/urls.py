@@ -11,6 +11,6 @@ schema_view = get_swagger_view(title='Torrents API')
 
 urlpatterns = [
     url('^$', schema_view),
-    url(r'^', include(router.urls)),
+    url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

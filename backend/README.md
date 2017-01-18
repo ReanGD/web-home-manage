@@ -1,0 +1,2 @@
+- makemigrations torrents
+- migrate torrents

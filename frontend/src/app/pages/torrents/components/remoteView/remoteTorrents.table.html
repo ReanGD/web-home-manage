@@ -7,9 +7,9 @@
             <p-dropdown [options]="content_type" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
         </template>
     </p-column>
-    <p-column field="ratio" header="Коэффициент" [sortable]="true"></p-column>
-    <p-column field="finished" header="Скачан" [sortable]="true"></p-column>
+    <p-column field="ratio" header="Коэффициент" [style]="{'width':'120px'}" [sortable]="true"></p-column>
     <p-column field="dir" header="Базовая директория" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column field="finished" header="Скачан" [style]="{'width':'80px'}" [sortable]="true"></p-column>
     <template let-torrent pTemplate="rowexpansion">
         <div class="ui-grid ui-grid-responsive ui-fluid">
             <div class="ui-grid-row">

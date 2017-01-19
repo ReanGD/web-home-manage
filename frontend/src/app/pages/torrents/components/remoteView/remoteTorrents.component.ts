@@ -1,5 +1,6 @@
 import { Component, OnInit  } from '@angular/core';
 import { RemoteTorrentsService, RemoteTorrent } from './remoteTorrents.service';
+import { SelectItem} from 'primeng/primeng';
 
 import 'style-loader!./remoteTorrents.scss';
 
@@ -11,6 +12,7 @@ import 'style-loader!./remoteTorrents.scss';
 export class RemoveTorrentsTable implements OnInit {
 
   torrents: RemoteTorrent[];
+  content_type: SelectItem[];
 
   constructor(private service: RemoteTorrentsService) { }
 

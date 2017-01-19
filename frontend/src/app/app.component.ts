@@ -11,7 +11,7 @@ import 'style-loader!./theme/initial.scss';
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------
-// import 'style-loader!primeng/resources/themes/cupertino/theme.css';
+import 'style-loader!primeng/resources/themes/omega/theme.css';
 import 'style-loader!primeng/resources/primeng.min.css';
 
 /*

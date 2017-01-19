@@ -30,7 +30,7 @@ class RemoteTorrent(models.Model):
                           name=torrent.name,
                           ratio=torrent.uploadRatio,
                           dir=torrent.downloadDir,
-                          files=json.dumps([it["name"] for it in files], ensure_ascii=False),
+                          files=[{'file': it["name"]} for it in files],
                           finished=finished).save()
 
 

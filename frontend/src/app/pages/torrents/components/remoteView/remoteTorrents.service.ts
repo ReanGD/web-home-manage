@@ -3,7 +3,6 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 // import {RemoteTorrent} from '../domain/car';
 
-
 export interface RemoteTorrent {
     id;
     name;

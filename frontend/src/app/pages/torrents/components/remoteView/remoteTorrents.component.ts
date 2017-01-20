@@ -15,6 +15,13 @@ export class RemoveTorrentsTable implements OnInit {
   constructor(private service: RemoteTorrentsService) { }
 
   ngOnInit() {
-      this.service.getRemoteTorrents().then(torrents => this.torrents = torrents);
+    this.content_type = [];
+    this.content_type.push({label: 'All', value: null});
+    this.content_type.push({label: 'Films', value: 'Films'});
+    this.content_type.push({label: 'AudioBooks', value: 'AudioBooks'});
+    this.content_type.push({label: 'Serials', value: 'Serials'});
+    this.content_type.push({label: 'Others', value: 'Others'});
+
+    this.service.getRemoteTorrents().then(torrents => this.torrents = torrents);
   }
 }

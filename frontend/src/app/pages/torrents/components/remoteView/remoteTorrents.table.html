@@ -1,7 +1,12 @@
 <h3 class="first">Remote torrents</h3>
-<p-dataTable [value]="torrents" resizableColumns="true" expandableRows="true" selectionMode="single">
+<p-dataTable [value]="torrents" resizableColumns="true" expandableRows="true" #dt>
     <p-column expander="true" [style]="{'width':'30px'}"></p-column>
     <p-column field="name" header="Имя" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column field="content_type" header="Контент" [sortable]="true" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
+        <template pTemplate="filter" let-col>
+            <p-dropdown [options]="content_type" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+        </template>
+    </p-column>
     <p-column field="ratio" header="Коэффициент" [sortable]="true"></p-column>
     <p-column field="finished" header="Скачан" [sortable]="true"></p-column>
     <p-column field="dir" header="Базовая директория" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
@@ -10,7 +15,7 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-1"></div>
                 <div class="ui-grid-col-4">
-                    <p-dataTable [value]="torrent.files" selectionMode="single">
+                    <p-dataTable [value]="torrent.files">
                         <p-column field="file" header="Имя"></p-column>
                     </p-dataTable>
                 </div>

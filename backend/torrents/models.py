@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.db import models
 
@@ -19,17 +20,37 @@ class RemoteTorrent(models.Model):
     def files(self, x):
         self.raw_files = json.dumps(x, ensure_ascii=False)
 
+    @property
+    def content_type(self):
+        contents = {'Films': '/Media/Films',
+                    'AudioBooks': '/Media/AudioBooks',
+                    'Serials': '/Media/Serials'}
+
+        for key, val in contents.items():
+            if self.dir.startswith(val):
+                return key
+
+        return 'Others'
+
+
     @staticmethod
     def sync(client):
+        base_dir = '/mnt/md1'
         RemoteTorrent.objects.all().delete()
         for torrent in client.get_torrents():
             files = [it for it in torrent.files().values() if it["selected"]]
             finished = not any(it['completed'] != it['size'] for it in files)
+            dir = os.path.abspath(torrent.downloadDir)
+            if dir.startswith('/mnt/md1/'):
+                dir = dir[len(base_dir):]
+            else:
+                raise RuntimeError('Unknown base directory for "{}"'.format(dir))
+
 
             RemoteTorrent(id=torrent.hashString,
                           name=torrent.name,
-                          ratio=torrent.uploadRatio,
-                          dir=torrent.downloadDir,
+                          ratio=round(torrent.uploadRatio, 1),
+                          dir=dir,
                           files=[{'file': it["name"]} for it in files],
                           finished=finished).save()
 

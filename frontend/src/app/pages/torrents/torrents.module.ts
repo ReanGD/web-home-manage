@@ -1,5 +1,5 @@
 import {NgModule}      from '@angular/core';
-import {DataTableModule, SharedModule} from 'primeng/primeng';
+import {DataTableModule, SharedModule, DropdownModule} from 'primeng/primeng';
 
 import {routing} from './torrents.routing';
 import {Torrents} from './torrents.component';
@@ -11,6 +11,7 @@ import {RemoteTorrentsService} from './components/remoteView/remoteTorrents.serv
     routing,
     DataTableModule,
     SharedModule,
+    DropdownModule,
   ],
   declarations: [
     Torrents,

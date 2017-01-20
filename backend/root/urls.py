@@ -5,7 +5,7 @@ from torrents import views
 
 router = DefaultRouter()
 router.register(r'remote_torrents', views.RemoteTorrentList)
-router.register(r'torrents', views.TorrentList)
+router.register(r'local_torrents', views.LocalTorrentList)
 
 schema_view = get_swagger_view(title='Torrents API')
 

@@ -1,14 +1,21 @@
 from rest_framework import serializers
-import torrents.models
+from torrents.models import RemoteTorrent, LocalTorrent
 
 
 class RemoteTorrentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = torrents.models.RemoteTorrent
+        model = RemoteTorrent
         fields = ('id', 'name', 'content_type', 'ratio', 'finished', 'dir', 'files')
 
 
-class TorrentSerializer(serializers.ModelSerializer):
+class LocalTorrentSerializer(serializers.ModelSerializer):
+    remote = RemoteTorrentSerializer(source='id', read_only=True)
+
     class Meta:
-        model = torrents.models.Torrent
-        fields = ('id', 'name')
+        model = LocalTorrent
+        fields = ('id', 'remote')
+
+    def create(self, validated_data):
+        id = validated_data['id']
+        remote = RemoteTorrent.objects.get(id=id)
+        return LocalTorrent.objects.create(id=remote)

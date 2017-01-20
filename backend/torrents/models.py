@@ -55,5 +55,5 @@ class RemoteTorrent(models.Model):
                           finished=finished).save()
 
 
-class Torrent(models.Model):
-    name = models.TextField()
+class LocalTorrent(models.Model):
+    id = models.OneToOneField(RemoteTorrent, primary_key=True)

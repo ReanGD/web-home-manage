@@ -1,8 +1,8 @@
 import time
 import transmissionrpc
 from rest_framework import viewsets
-from torrents.models import RemoteTorrent, Torrent
-from torrents.serializers import RemoteTorrentSerializer, TorrentSerializer
+from torrents.models import RemoteTorrent, LocalTorrent
+from torrents.serializers import RemoteTorrentSerializer, LocalTorrentSerializer
 
 
 class RemoteTorrentList(viewsets.ReadOnlyModelViewSet):
@@ -19,6 +19,6 @@ class RemoteTorrentList(viewsets.ReadOnlyModelViewSet):
         return super(RemoteTorrentList, self).dispatch(*args, **kwargs)
 
 
-class TorrentList(viewsets.ModelViewSet):
-    queryset = Torrent.objects.all()
-    serializer_class = TorrentSerializer
+class LocalTorrentList(viewsets.ModelViewSet):
+    queryset = LocalTorrent.objects.all()
+    serializer_class = LocalTorrentSerializer

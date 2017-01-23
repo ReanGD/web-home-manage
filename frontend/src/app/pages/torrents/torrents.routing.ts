@@ -1,7 +1,7 @@
 import { Routes, RouterModule }  from '@angular/router';
 
 import { Torrents } from './torrents.component';
-import { RemoveTorrentsTable } from './components/remoteView/remoteTorrents.component';
+import { RemotesTable } from './components/remotes/remotes.component';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     component: Torrents,
     children: [
-      { path: 'remotetorrents', component: RemoveTorrentsTable }
+      { path: 'remotes', component: RemotesTable }
     ]
   }
 ];

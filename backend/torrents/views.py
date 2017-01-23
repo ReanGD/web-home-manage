@@ -2,28 +2,29 @@ import time
 import transmissionrpc
 from rest_framework import mixins
 from rest_framework import viewsets
-from torrents.models import RemoteTorrent, LocalTorrent
-from torrents.serializers import RemoteTorrentSerializer, LocalTorrentSerializer
+from torrents.models import Remote, Local
+from torrents.serializers import RemoteSerializer, LocalSerializer
 
 
-class RemoteTorrentList(viewsets.ReadOnlyModelViewSet):
+class RemoteList(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
-    queryset = RemoteTorrent.objects.all()
-    serializer_class = RemoteTorrentSerializer
+    queryset = Remote.objects.all()
+    serializer_class = RemoteSerializer
     _cache_expired = time.time()
 
     def dispatch(self, *args, **kwargs):
-        if time.time() > RemoteTorrentList._cache_expired:
+        if time.time() > RemoteList._cache_expired:
             client = transmissionrpc.Client('192.168.1.8', 9091, 'admin', 'admin')
-            RemoteTorrent.sync(client)
-            RemoteTorrentList._cache_expired = time.time() + 5 * 60
+            Remote.sync(client)
+            RemoteList._cache_expired = time.time() + 5 * 60
 
-        return super(RemoteTorrentList, self).dispatch(*args, **kwargs)
+        return super(RemoteList, self).dispatch(*args, **kwargs)
 
-class LocalTorrentList(mixins.CreateModelMixin,
-                       mixins.RetrieveModelMixin,
-                       mixins.ListModelMixin,
-                       viewsets.GenericViewSet):
+
+class LocalList(mixins.CreateModelMixin,
+                mixins.RetrieveModelMixin,
+                mixins.ListModelMixin,
+                viewsets.GenericViewSet):
     pagination_class = None
-    queryset = LocalTorrent.objects.all()
-    serializer_class = LocalTorrentSerializer
+    queryset = Local.objects.all()
+    serializer_class = LocalSerializer

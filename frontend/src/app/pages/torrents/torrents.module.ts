@@ -3,8 +3,8 @@ import {DataTableModule, SharedModule, DropdownModule} from 'primeng/primeng';
 
 import {routing} from './torrents.routing';
 import {Torrents} from './torrents.component';
-import {RemoveTorrentsTable} from './components/remoteView/remoteTorrents.component';
-import {RemoteTorrentsService} from './components/remoteView/remoteTorrents.service';
+import {RemotesTable} from './components/remotes/remotes.component';
+import {RemotesService} from './components/remotes/remotes.service';
 
 @NgModule({
   imports: [
@@ -15,10 +15,10 @@ import {RemoteTorrentsService} from './components/remoteView/remoteTorrents.serv
   ],
   declarations: [
     Torrents,
-    RemoveTorrentsTable,
+    RemotesTable,
   ],
   providers: [
-    RemoteTorrentsService,
+    RemotesService,
   ]
 })
 export class TorrentsModule {

@@ -1,1 +1,1 @@
-export * from './remoteTorrents.component';
+export * from './remotes.component';

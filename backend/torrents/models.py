@@ -4,7 +4,7 @@ import os
 from django.db import models
 
 
-class RemoteTorrent(models.Model):
+class Remote(models.Model):
     id = models.CharField(max_length=40, primary_key=True)
     name = models.TextField(null=False)
     ratio = models.FloatField(null=False)
@@ -46,12 +46,12 @@ class RemoteTorrent(models.Model):
         files = [{'file': it["name"]} for it in raw_files]
 
         if db_torrent is None:
-            RemoteTorrent.objects.create(id=torrent.hashString,
-                                         name=torrent.name,
-                                         ratio=ratio,
-                                         dir=dir,
-                                         files=files,
-                                         finished=finished)
+            Remote.objects.create(id=torrent.hashString,
+                                  name=torrent.name,
+                                  ratio=ratio,
+                                  dir=dir,
+                                  files=files,
+                                  finished=finished)
         else:
             db_torrent.name = torrent.name
             db_torrent.ratio = ratio
@@ -63,18 +63,18 @@ class RemoteTorrent(models.Model):
     @staticmethod
     def sync(client):
         remote_torrents = {it.hashString: it for it in client.get_torrents()}
-        db_torrents = {it.id: it for it in RemoteTorrent.objects.all()}
+        db_torrents = {it.id: it for it in Remote.objects.all()}
 
         for key, torrent in db_torrents.items():
             if key in remote_torrents.keys():
-                RemoteTorrent._update_or_create(remote_torrents[key], torrent)
+                Remote._update_or_create(remote_torrents[key], torrent)
             else:
                 torrent.delete()
 
         for key, torrent in remote_torrents.items():
             if key not in db_torrents.keys():
-                RemoteTorrent._update_or_create(torrent, None)
+                Remote._update_or_create(torrent, None)
 
 
-class LocalTorrent(models.Model):
-    id = models.OneToOneField(RemoteTorrent, primary_key=True)
+class Local(models.Model):
+    id = models.OneToOneField(Remote, primary_key=True)

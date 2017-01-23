@@ -27,7 +27,7 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'remotetorrents',
+            path: 'remotes',
             data: {
               menu: {
                 title: 'Remote Torrents',

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-// import {RemoteTorrent} from '../domain/car';
+// import {Remotes} from '../domain/car';
 
-export interface RemoteTorrent {
+export interface Remotes {
     id;
     name;
     ratio;
@@ -13,15 +13,15 @@ export interface RemoteTorrent {
 
 
 @Injectable()
-export class RemoteTorrentsService {
+export class RemotesService {
 
   constructor(private http: Http) {
   }
 
-  getRemoteTorrents() {
-    return this.http.get('http://127.0.0.1:8000/api/v1/remote_torrents/')
+  getRemotes() {
+    return this.http.get('http://127.0.0.1:8000/api/v1/remotes/')
                 .toPromise()
-                .then(res => <RemoteTorrent[]> res.json().results)
+                .then(res => <Remotes[]> res.json())
                 .then(data => { return data; });
   }
 }

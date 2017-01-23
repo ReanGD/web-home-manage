@@ -1,20 +1,20 @@
 import { Component, OnInit  } from '@angular/core';
-import { RemoteTorrentsService, RemoteTorrent } from './remoteTorrents.service';
-import { SelectItem} from 'primeng/primeng';
+import { RemotesService, Remotes } from './remotes.service';
+import { SelectItem } from 'primeng/primeng';
 
-import 'style-loader!./remoteTorrents.scss';
+import 'style-loader!./remotes.scss';
 
 @Component({
-  selector: 'remote-torrents-table',
-  templateUrl: 'remoteTorrents.table.html',
+  selector: 'remotes-table',
+  templateUrl: 'remotes.table.html',
 })
 
-export class RemoveTorrentsTable implements OnInit {
+export class RemotesTable implements OnInit {
 
-  torrents: RemoteTorrent[];
+  torrents: Remotes[];
   content_type: SelectItem[];
 
-  constructor(private service: RemoteTorrentsService) { }
+  constructor(private service: RemotesService) { }
 
   ngOnInit() {
     this.content_type = [];
@@ -24,6 +24,6 @@ export class RemoveTorrentsTable implements OnInit {
     this.content_type.push({label: 'Serials', value: 'Serials'});
     this.content_type.push({label: 'Others', value: 'Others'});
 
-    this.service.getRemoteTorrents().then(torrents => this.torrents = torrents);
+    this.service.getRemotes().then(torrents => this.torrents = torrents );
   }
 }

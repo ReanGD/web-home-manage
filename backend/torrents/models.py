@@ -32,27 +32,48 @@ class RemoteTorrent(models.Model):
 
         return 'Others'
 
+    @staticmethod
+    def _update_or_create(torrent, db_torrent):
+        base_dir = '/mnt/md1'
+        raw_files = [it for it in torrent.files().values() if it["selected"]]
+        finished = not any(it['completed'] != it['size'] for it in raw_files)
+        dir = os.path.abspath(torrent.downloadDir)
+        if dir.startswith(base_dir):
+            dir = dir[len(base_dir):]
+        else:
+            raise RuntimeError('Unknown base directory for "{}"'.format(dir))
+        ratio = round(torrent.uploadRatio, 1)
+        files = [{'file': it["name"]} for it in raw_files]
+
+        if db_torrent is None:
+            RemoteTorrent.objects.create(id=torrent.hashString,
+                                         name=torrent.name,
+                                         ratio=ratio,
+                                         dir=dir,
+                                         files=files,
+                                         finished=finished)
+        else:
+            db_torrent.name = torrent.name
+            db_torrent.ratio = ratio
+            db_torrent.dir = dir
+            db_torrent.files = files
+            db_torrent.finished = finished
+            db_torrent.save()
 
     @staticmethod
     def sync(client):
-        base_dir = '/mnt/md1'
-        RemoteTorrent.objects.all().delete()
-        for torrent in client.get_torrents():
-            files = [it for it in torrent.files().values() if it["selected"]]
-            finished = not any(it['completed'] != it['size'] for it in files)
-            dir = os.path.abspath(torrent.downloadDir)
-            if dir.startswith('/mnt/md1/'):
-                dir = dir[len(base_dir):]
+        remote_torrents = {it.hashString: it for it in client.get_torrents()}
+        db_torrents = {it.id: it for it in RemoteTorrent.objects.all()}
+
+        for key, torrent in db_torrents.items():
+            if key in remote_torrents.keys():
+                RemoteTorrent._update_or_create(remote_torrents[key], torrent)
             else:
-                raise RuntimeError('Unknown base directory for "{}"'.format(dir))
+                torrent.delete()
 
-
-            RemoteTorrent(id=torrent.hashString,
-                          name=torrent.name,
-                          ratio=round(torrent.uploadRatio, 1),
-                          dir=dir,
-                          files=[{'file': it["name"]} for it in files],
-                          finished=finished).save()
+        for key, torrent in remote_torrents.items():
+            if key not in db_torrents.keys():
+                RemoteTorrent._update_or_create(torrent, None)
 
 
 class LocalTorrent(models.Model):

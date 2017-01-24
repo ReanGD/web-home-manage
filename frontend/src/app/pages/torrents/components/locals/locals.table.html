@@ -1,0 +1,23 @@
+<h3 class="first">Local torrents</h3>
+<p-dataTable [value]="torrents" resizableColumns="true" expandableRows="true" #dt>
+    <p-column expander="true" [style]="{'width':'30px'}"></p-column>
+    <p-column field="remote.name" header="Имя" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column field="remote.content_type" header="Контент" [sortable]="true" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
+        <template pTemplate="filter" let-col>
+            <p-dropdown [options]="content_type" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+        </template>
+    </p-column>
+    <p-column field="remote.dir" header="Базовая директория" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <template let-torrent pTemplate="rowexpansion">
+        <div class="ui-grid ui-grid-responsive ui-fluid">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-1"></div>
+                <div class="ui-grid-col-4">
+                    <p-dataTable [value]="torrent.remote.files">
+                        <p-column field="file" header="Имя"></p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </div>
+    </template>
+</p-dataTable>

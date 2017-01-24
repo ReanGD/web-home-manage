@@ -5,6 +5,8 @@ import {routing} from './torrents.routing';
 import {Torrents} from './torrents.component';
 import {RemotesTable} from './components/remotes/remotes.component';
 import {RemotesService} from './components/remotes/remotes.service';
+import {LocalsTable} from './components/locals/locals.component';
+import {LocalsService} from './components/locals/locals.service';
 
 @NgModule({
   imports: [
@@ -16,9 +18,11 @@ import {RemotesService} from './components/remotes/remotes.service';
   declarations: [
     Torrents,
     RemotesTable,
+    LocalsTable,
   ],
   providers: [
     RemotesService,
+    LocalsService,
   ]
 })
 export class TorrentsModule {

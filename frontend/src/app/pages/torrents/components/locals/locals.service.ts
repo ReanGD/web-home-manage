@@ -3,25 +3,27 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 export interface Remotes {
-    id;
-    name;
-    content_type;
-    ratio;
-    finished;
-    dir;
-    files;
+  name;
+  content_type;
+  dir;
+  files;
+}
+
+export interface Locals {
+  id;
+  remote: Remotes;
 }
 
 @Injectable()
-export class RemotesService {
+export class LocalsService {
 
   constructor(private http: Http) {
   }
 
   get() {
-    return this.http.get('http://127.0.0.1:8000/api/v1/remotes/')
+    return this.http.get('http://127.0.0.1:8000/api/v1/locals/')
                 .toPromise()
-                .then(res => <Remotes[]> res.json())
+                .then(res => <Locals[]> res.json())
                 .then(data => { return data; });
   }
 }

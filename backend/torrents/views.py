@@ -6,7 +6,8 @@ from torrents.models import Remote, Local
 from torrents.serializers import RemoteSerializer, LocalSerializer
 
 
-class RemoteList(viewsets.ReadOnlyModelViewSet):
+class RemoteList(mixins.ListModelMixin,
+                viewsets.GenericViewSet):
     pagination_class = None
     queryset = Remote.objects.all()
     serializer_class = RemoteSerializer
@@ -22,7 +23,6 @@ class RemoteList(viewsets.ReadOnlyModelViewSet):
 
 
 class LocalList(mixins.CreateModelMixin,
-                mixins.RetrieveModelMixin,
                 mixins.ListModelMixin,
                 viewsets.GenericViewSet):
     pagination_class = None

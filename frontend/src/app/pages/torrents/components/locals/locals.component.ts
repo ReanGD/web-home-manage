@@ -1,20 +1,20 @@
 import { Component, OnInit  } from '@angular/core';
-import { RemotesService, Remotes } from './remotes.service';
+import { LocalsService, Locals } from './locals.service';
 import { SelectItem } from 'primeng/primeng';
 
-import 'style-loader!./remotes.scss';
+import 'style-loader!./locals.scss';
 
 @Component({
-  selector: 'remotes-table',
-  templateUrl: 'remotes.table.html',
+  selector: 'locals-table',
+  templateUrl: 'locals.table.html',
 })
 
-export class RemotesTable implements OnInit {
+export class LocalsTable implements OnInit {
 
-  torrents: Remotes[];
+  torrents: Locals[];
   content_type: SelectItem[];
 
-  constructor(private service: RemotesService) { }
+  constructor(private service: LocalsService) { }
 
   ngOnInit() {
     this.content_type = [];

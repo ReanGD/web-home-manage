@@ -33,6 +33,14 @@ export const PAGES_MENU = [
                 title: 'Remote Torrents',
               }
             }
+          },
+          {
+            path: 'locals',
+            data: {
+              menu: {
+                title: 'Local Torrents',
+              }
+            }
           }
         ]
       },

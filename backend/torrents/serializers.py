@@ -8,8 +8,14 @@ class RemoteSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'content_type', 'ratio', 'finished', 'dir', 'files')
 
 
+class RemoteShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Remote
+        fields = ('name', 'content_type', 'dir', 'files')
+
+
 class LocalSerializer(serializers.ModelSerializer):
-    remote = RemoteSerializer(source='id', read_only=True)
+    remote = RemoteShortSerializer(source='id', read_only=True)
 
     class Meta:
         model = Local

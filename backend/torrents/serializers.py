@@ -3,9 +3,11 @@ from torrents.models import Remote, Local
 
 
 class RemoteSerializer(serializers.ModelSerializer):
+    local = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
+
     class Meta:
         model = Remote
-        fields = ('id', 'name', 'content_type', 'ratio', 'finished', 'dir', 'files')
+        fields = ('id', 'name', 'content_type', 'ratio', 'finished', 'dir', 'files', 'local')
 
 
 class RemoteShortSerializer(serializers.ModelSerializer):

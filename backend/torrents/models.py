@@ -77,4 +77,4 @@ class Remote(models.Model):
 
 
 class Local(models.Model):
-    id = models.OneToOneField(Remote, primary_key=True)
+    id = models.OneToOneField(Remote, related_name='local', primary_key=True)

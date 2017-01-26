@@ -9,3 +9,6 @@ test.py
 
 # Virtualenv
 venv/
+
+# Migrations
+migrations/

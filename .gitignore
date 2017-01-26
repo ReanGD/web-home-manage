@@ -11,3 +11,6 @@
 /.idea/**/sqlDataSources.xml
 /.idea/**/dynamic.xml
 /.idea/**/uiDesigner.xml
+
+# others
+ng2-admin-master.zip

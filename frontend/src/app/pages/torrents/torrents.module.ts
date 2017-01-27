@@ -1,4 +1,7 @@
 import {NgModule}      from '@angular/core';
+import {CommonModule}  from '@angular/common';
+import {NgaModule} from '../../theme/nga.module';
+import {RatingModule} from 'ng2-bootstrap';
 import {DataTableModule, SharedModule, DropdownModule} from 'primeng/primeng';
 
 import {routing} from './torrents.routing';
@@ -10,9 +13,13 @@ import {LocalsService} from './components/locals/locals.service';
 
 @NgModule({
   imports: [
+    CommonModule,
+    NgaModule,
+    RatingModule.forRoot(),
     routing,
-    DataTableModule,
+
     SharedModule,
+    DataTableModule,
     DropdownModule,
   ],
   declarations: [

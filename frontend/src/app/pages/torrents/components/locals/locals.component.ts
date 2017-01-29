@@ -1,6 +1,6 @@
-import { Component, OnInit  } from '@angular/core';
-import { LocalsService, Locals } from './locals.service';
-import { SelectItem } from 'primeng/primeng';
+import {Component, OnInit} from '@angular/core';
+import {LocalsService, Locals} from './locals.service';
+import {Message, SelectItem} from "primeng/components/common/api";
 
 import 'style-loader!./locals.scss';
 
@@ -11,10 +11,12 @@ import 'style-loader!./locals.scss';
 
 export class LocalsTable implements OnInit {
 
+  msgs: Message[] = [];
   torrents: Locals[];
   content_type: SelectItem[];
 
-  constructor(private service: LocalsService) { }
+  constructor(private service: LocalsService) {
+  }
 
   ngOnInit() {
     this.content_type = [];
@@ -24,6 +26,13 @@ export class LocalsTable implements OnInit {
     this.content_type.push({label: 'Serials', value: 'Serials'});
     this.content_type.push({label: 'Others', value: 'Others'});
 
-    this.service.get().then(torrents => this.torrents = torrents );
+    this.refreshTable();
+  }
+
+  refreshTable() {
+    this.service.get()
+      .then(torrents => { this.torrents = torrents; return torrents.length; })
+      .then(len => this.msgs.push(
+        { severity: 'success', summary: 'Load success', detail: len + ' torrents' }));
   }
 }

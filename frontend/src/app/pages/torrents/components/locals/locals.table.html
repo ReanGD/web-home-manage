@@ -1,6 +1,11 @@
 <h3 class="first">Local torrents</h3>
+<p-growl [value]="msgs"></p-growl>
 <p-dataTable [value]="torrents" resizableColumns="true" expandableRows="true" #dt>
-    <p-column expander="true" [style]="{'width':'30px'}"></p-column>
+    <p-column expander="true" styleClass="col-expander">
+        <template pTemplate="header">
+            <button type="button" pButton (click)="refreshTable()" icon="fa-refresh"></button>
+        </template>
+    </p-column>
     <p-column field="remote.name" header="Имя" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
     <p-column field="remote.content_type" header="Контент" [sortable]="true" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
         <template pTemplate="filter" let-col>

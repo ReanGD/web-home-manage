@@ -1,6 +1,6 @@
-import { Component, OnInit  } from '@angular/core';
-import { RemotesService, Remotes } from './remotes.service';
-import { SelectItem } from 'primeng/primeng';
+import {Component, OnInit} from '@angular/core';
+import {RemotesService, Remotes} from './remotes.service';
+import {Message, SelectItem} from "primeng/components/common/api";
 
 import 'style-loader!./remotes.scss';
 
@@ -11,10 +11,12 @@ import 'style-loader!./remotes.scss';
 
 export class RemotesTable implements OnInit {
 
+  msgs: Message[] = [];
   torrents: Remotes[];
   content_type: SelectItem[];
 
-  constructor(private service: RemotesService) { }
+  constructor(private service: RemotesService) {
+  }
 
   ngOnInit() {
     this.content_type = [];
@@ -24,6 +26,13 @@ export class RemotesTable implements OnInit {
     this.content_type.push({label: 'Serials', value: 'Serials'});
     this.content_type.push({label: 'Others', value: 'Others'});
 
-    this.service.get().then(torrents => this.torrents = torrents );
+    this.refreshTable();
+  }
+
+  refreshTable() {
+    this.service.get()
+      .then(torrents => { this.torrents = torrents; return torrents.length; })
+      .then(len => this.msgs.push(
+        { severity: 'success', summary: 'Load success', detail: len + ' torrents' }));
   }
 }

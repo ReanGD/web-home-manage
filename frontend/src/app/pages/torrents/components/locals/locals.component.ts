@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {LocalsService, Locals} from './locals.service';
 import {Message, SelectItem} from "primeng/components/common/api";
 
-import 'style-loader!./locals.scss';
 
 @Component({
   selector: 'locals-table',

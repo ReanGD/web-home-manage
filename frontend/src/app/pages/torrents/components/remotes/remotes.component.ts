@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {RemotesService, Remotes} from './remotes.service';
 import {Message, SelectItem} from "primeng/components/common/api";
 
-import 'style-loader!./remotes.scss';
 
 @Component({
   selector: 'remotes-table',

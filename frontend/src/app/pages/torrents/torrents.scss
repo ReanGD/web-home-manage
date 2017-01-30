@@ -1,0 +1,28 @@
+@import "../../theme/sass/conf/conf";
+
+.ui-datatable table {
+  table-layout: auto !important;
+}
+
+.col-expander {
+  width: 30px;
+  text-align: center;
+}
+
+.col-ratio {
+  width: 120px;
+  text-align: right;
+}
+
+.col-finished {
+  width: 80px;
+}
+
+.col-content-type {
+  overflow: visible !important;
+  width: 180px;
+}
+
+.col-content-type .ui-column-filter {
+  width: 100% !important;
+}

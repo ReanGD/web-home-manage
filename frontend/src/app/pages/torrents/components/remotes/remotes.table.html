@@ -19,6 +19,11 @@
     </p-column>
     <p-column field="dir" header="Base dir" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
     <p-column field="finished" header="Loaded" styleClass="col-finished" [sortable]="true"></p-column>
+    <p-column styleClass="col-download">
+        <template let-torrent="rowData" pTemplate="body">
+            <button type="button" pButton (click)="downloadTorrent(torrent)" icon="fa-cloud-download"></button>
+        </template>
+    </p-column>
     <template let-torrent pTemplate="rowexpansion">
         <div class="ui-grid ui-grid-responsive ui-fluid">
             <div class="ui-grid-row">

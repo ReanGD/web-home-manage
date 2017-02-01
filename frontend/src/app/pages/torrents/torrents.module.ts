@@ -7,10 +7,9 @@ import {DataTableModule, SharedModule, DropdownModule,
 
 import {routing} from './torrents.routing';
 import {Torrents} from './torrents.component';
+import {TorrentsService} from './torrents.service';
 import {RemotesTable} from './components/remotes/remotes.component';
-import {RemotesService} from './components/remotes/remotes.service';
 import {LocalsTable} from './components/locals/locals.component';
-import {LocalsService} from './components/locals/locals.service';
 
 @NgModule({
   imports: [
@@ -31,8 +30,7 @@ import {LocalsService} from './components/locals/locals.service';
     LocalsTable,
   ],
   providers: [
-    RemotesService,
-    LocalsService,
+    TorrentsService,
   ]
 })
 export class TorrentsModule {

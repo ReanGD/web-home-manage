@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LocalsService, Locals} from './locals.service';
+import {TorrentsService, Locals} from '../../torrents.service';
 import {Message, SelectItem} from "primeng/components/common/api";
 
 
@@ -14,7 +14,7 @@ export class LocalsTable implements OnInit {
   torrents: Locals[];
   content_type: SelectItem[];
 
-  constructor(private service: LocalsService) {
+  constructor(private service: TorrentsService) {
   }
 
   ngOnInit() {
@@ -29,9 +29,9 @@ export class LocalsTable implements OnInit {
   }
 
   refreshTable() {
-    this.service.get()
+    this.service.getLocals()
       .then(torrents => { this.torrents = torrents; return torrents.length; })
       .then(len => this.msgs.push(
-        { severity: 'success', summary: 'Load success', detail: len + ' torrents' }));
+        { severity: 'success', summary: 'Load success', detail: len + ' torrents.' }));
   }
 }

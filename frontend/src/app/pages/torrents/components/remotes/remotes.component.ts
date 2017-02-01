@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RemotesService, Remotes} from './remotes.service';
+import {TorrentsService, Remotes} from '../../torrents.service';
 import {Message, SelectItem} from "primeng/components/common/api";
 
 
@@ -14,7 +14,7 @@ export class RemotesTable implements OnInit {
   torrents: Remotes[];
   content_type: SelectItem[];
 
-  constructor(private service: RemotesService) {
+  constructor(private service: TorrentsService) {
   }
 
   ngOnInit() {
@@ -29,9 +29,13 @@ export class RemotesTable implements OnInit {
   }
 
   refreshTable() {
-    this.service.get()
+    this.service.getRemotes()
       .then(torrents => { this.torrents = torrents; return torrents.length; })
       .then(len => this.msgs.push(
         { severity: 'success', summary: 'Load success', detail: len + ' torrents' }));
+  }
+
+  downloadTorrent(torrents: Remotes) {
+    this.service.createLocals(torrents);
   }
 }

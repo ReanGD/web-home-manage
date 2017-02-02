@@ -2344,10 +2344,6 @@ icss-replace-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/icss-replace-symbols/-/icss-replace-symbols-1.0.2.tgz#cb0b6054eb3af6edc9ab1d62d01933e2d4c8bfa5"
 
-ie-shim@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/ie-shim/-/ie-shim-0.1.0.tgz#d329de228e7dfe656feaea3e20748ef095363c5d"
-
 ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
@@ -3361,10 +3357,6 @@ ng2-bootstrap@1.3.3:
   resolved "https://registry.yarnpkg.com/ng2-bootstrap/-/ng2-bootstrap-1.3.3.tgz#2c66781d2e4d4620237bd455250105dab97ee94f"
   dependencies:
     moment "2.17.1"
-
-ng2-completer@1.1.0, ng2-completer@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/ng2-completer/-/ng2-completer-1.1.0.tgz#5fd8b415c190e209a74c607388c44b4cbe606e51"
 
 ngc-webpack@1.2.0:
   version "1.2.0"
@@ -5466,15 +5458,6 @@ typescript@2.0.10:
 typescript@2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.6.tgz#40c7e6e9e5da7961b7718b55505f9cac9487a607"
-
-typogr@0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/typogr/-/typogr-0.6.6.tgz#49cb29a623d4f0c4d39ed91db790d847e4a360e8"
-  dependencies:
-    async "0.2"
-    commander "1.0"
-    glob "3"
-    mkdirp "0.3"
 
 uglify-js@2.8.x, uglify-js@^2.6, uglify-js@^2.7.5:
   version "2.8.4"

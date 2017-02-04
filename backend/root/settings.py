@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'torrents',
     'corsheaders',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,8 @@ LOGIN_REDIRECT_URL = '/'
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:3000'
 )
+
+Q_CLUSTER = {
+    'workers': 2,
+    'orm': 'default'
+}

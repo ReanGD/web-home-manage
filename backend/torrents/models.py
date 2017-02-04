@@ -78,3 +78,4 @@ class Remote(models.Model):
 
 class Local(models.Model):
     id = models.OneToOneField(Remote, related_name='local', primary_key=True)
+    task_id = models.CharField(max_length=40, null=True)

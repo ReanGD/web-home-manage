@@ -1,9 +1,14 @@
+from django_q.tasks import async
 from rest_framework import serializers
 from torrents.models import Remote, Local
+from torrents.task import create_local_torrent
 
 
 class RemoteSerializer(serializers.ModelSerializer):
-    local = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
+    local = serializers.SlugRelatedField(many=False,
+                                         read_only=True,
+                                         allow_null=True,
+                                         slug_field='task_id')
 
     class Meta:
         model = Remote
@@ -21,9 +26,13 @@ class LocalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Local
-        fields = ('id', 'remote')
+        fields = ('id', 'remote', 'task_id')
 
     def create(self, validated_data):
-        id = validated_data['id']
-        remote = Remote.objects.get(id=id)
-        return Local.objects.create(id=remote)
+        torrent_id = validated_data['id']
+        remote = Remote.objects.get(id=torrent_id)
+        local = Local.objects.create(id=remote)
+        local.task_id = async('torrents.task.create_local_torrent',
+                              torrent_id, task_name='copy '+torrent_id)
+        local.save()
+        return local

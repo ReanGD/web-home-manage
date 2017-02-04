@@ -14,5 +14,6 @@ setup(
                       'django-rest-swagger==2.1.2',
                       'transmissionrpc==0.11',
                       'django-cors-headers==2.0.2',
+                      'django-q==0.8.0',
                       'pygments']
 )

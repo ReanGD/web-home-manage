@@ -23,7 +23,8 @@
         <template let-torrent="rowData" pTemplate="body">
             <button pButton *ngIf="(torrent.local==null) && torrent.finished" type="button" (click)="downloadTorrent(torrent)" icon="fa-cloud-download"></button>
             <button pButton *ngIf="!torrent.finished" type="text" icon="fa-battery-half" [disabled]="true" label="Loading"></button>
-            <button pButton *ngIf="torrent.local!=null" type="text" icon="fa-check" [disabled]="true" label="Finished"></button>
+            <button pButton *ngIf="(torrent.local!=null) && (torrent.local.length==0)" type="text" icon="fa-check" [disabled]="true" label="Finished"></button>
+            <button pButton *ngIf="(torrent.local!=null) && (torrent.local.length!=0)" type="text" icon="fa-exchange" [disabled]="true" label="Copied"></button>
         </template>
     </p-column>
     <template let-torrent pTemplate="rowexpansion">

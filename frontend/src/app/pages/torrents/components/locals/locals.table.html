@@ -3,7 +3,7 @@
 <p-dataTable [value]="torrents" resizableColumns="true" expandableRows="true" #dt>
     <p-column expander="true" styleClass="col-expander">
         <template pTemplate="header">
-            <button type="button" pButton (click)="refreshTable()" icon="fa-refresh"></button>
+            <button pButton type="button" (click)="refreshTable()" icon="fa-refresh"></button>
         </template>
     </p-column>
     <p-column field="remote.name" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>

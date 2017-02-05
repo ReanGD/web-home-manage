@@ -2,6 +2,7 @@ import json
 import os
 
 from django.db import models
+from django.conf import settings
 
 
 class Remote(models.Model):
@@ -22,11 +23,7 @@ class Remote(models.Model):
 
     @property
     def content_type(self):
-        contents = {'Films': '/Media/Films',
-                    'AudioBooks': '/Media/AudioBooks',
-                    'Serials': '/Media/Serials'}
-
-        for key, val in contents.items():
+        for key, val in settings.TORRENT['CONTENT_MAP'].items():
             if self.dir.startswith(val):
                 return key
 
@@ -34,7 +31,7 @@ class Remote(models.Model):
 
     @staticmethod
     def _update_or_create(torrent, db_torrent):
-        base_dir = '/mnt/md1'
+        base_dir = settings.TORRENT['BASE_REMOTE']
         raw_files = [it for it in torrent.files().values() if it["selected"]]
         finished = not any(it['completed'] != it['size'] for it in raw_files)
         dir = os.path.abspath(torrent.downloadDir)

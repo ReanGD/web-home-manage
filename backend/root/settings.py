@@ -152,3 +152,17 @@ Q_CLUSTER = {
     'workers': 2,
     'orm': 'default'
 }
+
+TORRENT = {
+    'CONTENT_MAP': {'Films': '/Media/Films',
+                    'AudioBooks': '/Media/AudioBooks',
+                    'Serials': '/Media/Serials'},
+    'BASE_REMOTE': '/mnt/md1',
+    'TRANSMISSION': {
+        'HOST': '192.168.1.8',
+        'PORT': 9091,
+        'USER': 'admin',
+        'PASS': 'admin',
+        'UPDATE_TIMEOUT_SEC': 5 * 60,
+    },
+}

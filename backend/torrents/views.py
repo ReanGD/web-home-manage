@@ -1,5 +1,6 @@
 import time
 import transmissionrpc
+from django.conf import settings
 from rest_framework import mixins
 from rest_framework import viewsets
 from torrents.models import Remote, Local
@@ -15,9 +16,10 @@ class RemoteList(mixins.ListModelMixin,
 
     def dispatch(self, *args, **kwargs):
         if time.time() > RemoteList._cache_expired:
-            client = transmissionrpc.Client('192.168.1.8', 9091, 'admin', 'admin')
+            st = settings.TORRENT['TRANSMISSION']
+            client = transmissionrpc.Client(st['HOST'], st['PORT'], st['USER'], st['PASS'])
             Remote.sync(client)
-            RemoteList._cache_expired = time.time() + 5 * 60
+            RemoteList._cache_expired = time.time() + st['UPDATE_TIMEOUT_SEC']
 
         return super(RemoteList, self).dispatch(*args, **kwargs)
 

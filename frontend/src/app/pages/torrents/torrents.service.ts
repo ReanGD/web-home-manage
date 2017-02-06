@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-export interface Remotes {
+export interface Remote {
   id;
   name;
   content_type;
@@ -12,16 +12,16 @@ export interface Remotes {
   files;
 }
 
-export interface RemotesShort {
+export interface RemoteShort {
   name;
   content_type;
   dir;
   files;
 }
 
-export interface Locals {
+export interface Local {
   id;
-  remote: RemotesShort;
+  remote: RemoteShort;
 }
 
 @Injectable()
@@ -34,7 +34,7 @@ export class TorrentsService {
     return this.http.get('http://127.0.0.1:8000/api/v1/remotes/')
       .toPromise()
       .then(res => {
-        return <Remotes[]> res.json();
+        return <Remote[]> res.json();
       });
   }
 
@@ -42,11 +42,11 @@ export class TorrentsService {
     return this.http.get('http://127.0.0.1:8000/api/v1/locals/')
       .toPromise()
       .then(res => {
-        return <Locals[]> res.json();
+        return <Local[]> res.json();
       });
   }
 
-  createLocals(torrent: Remotes) {
+  createLocals(torrent: Remote) {
     var headers = new Headers({
       'Content-Type': 'application/json'
     });
@@ -57,7 +57,7 @@ export class TorrentsService {
       {headers: headers})
       .toPromise()
       .then(res => {
-        return <Locals> res.json();
+        return <Local> res.json();
       });
   }
 }

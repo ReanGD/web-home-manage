@@ -46,7 +46,7 @@ export class TorrentsService {
       });
   }
 
-  createLocals(torrent: Remote) {
+  createLocal(torrent: Remote) {
     var headers = new Headers({
       'Content-Type': 'application/json'
     });
@@ -60,4 +60,10 @@ export class TorrentsService {
         return <Local> res.json();
       });
   }
+
+  removeLocal(torrent: Local) {
+    return this.http.delete('http://127.0.0.1:8000/api/v1/locals/'+torrent.id+'/')
+      .toPromise();
+  }
+
 }

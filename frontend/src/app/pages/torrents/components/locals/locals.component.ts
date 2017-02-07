@@ -34,4 +34,9 @@ export class LocalsTable implements OnInit {
       .then(len => this.msgs.push(
         { severity: 'success', summary: 'Load success', detail: len + ' torrents.' }));
   }
+
+  removeTorrent(torrents: Local) {
+    this.service.removeLocal(torrents)
+      .then(() => this.refreshTable());
+  }
 }

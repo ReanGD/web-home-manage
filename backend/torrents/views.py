@@ -1,8 +1,10 @@
 import time
 import transmissionrpc
 from django.conf import settings
-from rest_framework import mixins
+from rest_framework import mixins, status
 from rest_framework import viewsets
+from rest_framework.response import Response
+
 from torrents.models import Remote, Local
 from torrents.serializers import RemoteSerializer, LocalSerializer
 
@@ -25,8 +27,15 @@ class RemoteList(mixins.ListModelMixin,
 
 
 class LocalList(mixins.CreateModelMixin,
+                mixins.DestroyModelMixin,
                 mixins.ListModelMixin,
                 viewsets.GenericViewSet):
     pagination_class = None
     queryset = Local.objects.all()
     serializer_class = LocalSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+

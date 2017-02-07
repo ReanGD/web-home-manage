@@ -13,6 +13,11 @@
         </template>
     </p-column>
     <p-column field="remote.dir" header="Base dir" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column styleClass="col-buttons">
+        <template let-torrent="rowData" pTemplate="body">
+            <button pButton *ngIf="(torrent.task_id!=null) && (torrent.task_id.length==0)" type="button" (click)="removeTorrent(torrent)" icon="fa-trash"></button>
+        </template>
+    </p-column>
     <template let-torrent pTemplate="rowexpansion">
         <div class="ui-grid ui-grid-responsive ui-fluid">
             <div class="ui-grid-row">

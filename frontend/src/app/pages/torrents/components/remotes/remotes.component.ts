@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {TorrentsService, Remote, Local} from '../../torrents.service';
-import {Message, SelectItem} from "primeng/components/common/api";
+import {Component} from '@angular/core';
+import {BaseTable} from '../../torrents.component';
+import {TorrentsService, Remote} from '../../torrents.service';
 
 
 @Component({
@@ -8,34 +8,33 @@ import {Message, SelectItem} from "primeng/components/common/api";
   templateUrl: 'remotes.table.html',
 })
 
-export class RemotesTable implements OnInit {
+export class RemotesTable extends BaseTable {
 
-  msgs: Message[] = [];
   torrents: Remote[];
-  content_type: SelectItem[];
 
   constructor(private service: TorrentsService) {
+    super();
   }
 
-  ngOnInit() {
-    this.content_type = [];
-    this.content_type.push({label: 'All', value: null});
-    this.content_type.push({label: 'Films', value: 'Films'});
-    this.content_type.push({label: 'AudioBooks', value: 'AudioBooks'});
-    this.content_type.push({label: 'Serials', value: 'Serials'});
-    this.content_type.push({label: 'Others', value: 'Others'});
+  existTasks():boolean {
+    for (let torrent of this.torrents) {
+     if((torrent.local!=null) && (torrent.local.length!=0))
+       return true;
+    }
 
-    this.refreshTable();
+    return false;
   }
 
-  refreshTable() {
+  refreshTable(by_timer = false) {
     this.service.getRemotes()
-      .then(torrents => { this.torrents = torrents; return torrents.length; })
-      .then(len => this.msgs.push(
-        { severity: 'success', summary: 'Load success', detail: len + ' torrents' }));
+      .then(torrents => {
+        this.torrents = torrents;
+        super.refreshTableImpl(!by_timer, torrents.length);
+      });
   }
 
   downloadTorrent(torrent: Remote) {
-    this.service.createLocal(torrent);
+    this.service.createLocal(torrent)
+      .then(() => this.refreshTable(true));
   }
 }

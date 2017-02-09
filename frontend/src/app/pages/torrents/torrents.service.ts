@@ -10,6 +10,7 @@ export interface Remote {
   finished;
   dir;
   files;
+  local;
 }
 
 export interface RemoteShort {
@@ -22,6 +23,7 @@ export interface RemoteShort {
 export interface Local {
   id;
   remote: RemoteShort;
+  task_id;
 }
 
 @Injectable()
@@ -47,10 +49,10 @@ export class TorrentsService {
   }
 
   createLocal(torrent: Remote) {
-    var headers = new Headers({
+    let headers = new Headers({
       'Content-Type': 'application/json'
     });
-    var data = JSON.stringify({'id': torrent.id});
+    let data = JSON.stringify({'id': torrent.id});
 
     return this.http.post('http://127.0.0.1:8000/api/v1/locals/',
       data,

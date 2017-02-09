@@ -16,6 +16,7 @@
     <p-column styleClass="col-buttons">
         <template let-torrent="rowData" pTemplate="body">
             <button pButton *ngIf="(torrent.task_id!=null) && (torrent.task_id.length==0)" type="button" (click)="removeTorrent(torrent)" icon="fa-trash"></button>
+            <button pButton *ngIf="(torrent.task_id!=null) && (torrent.task_id.length!=0)" type="text" icon="fa-exchange" [disabled]="true" label="Copied"></button>
         </template>
     </p-column>
     <template let-torrent pTemplate="rowexpansion">

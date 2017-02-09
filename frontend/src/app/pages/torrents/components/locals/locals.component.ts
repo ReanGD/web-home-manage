@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {BaseTable} from '../../torrents.component';
 import {TorrentsService, Local} from '../../torrents.service';
-import {Message, SelectItem} from "primeng/components/common/api";
 
 
 @Component({
@@ -8,31 +8,29 @@ import {Message, SelectItem} from "primeng/components/common/api";
   templateUrl: 'locals.table.html',
 })
 
-export class LocalsTable implements OnInit {
+export class LocalsTable extends BaseTable {
 
-  msgs: Message[] = [];
   torrents: Local[];
-  content_type: SelectItem[];
 
   constructor(private service: TorrentsService) {
+      super();
   }
 
-  ngOnInit() {
-    this.content_type = [];
-    this.content_type.push({label: 'All', value: null});
-    this.content_type.push({label: 'Films', value: 'Films'});
-    this.content_type.push({label: 'AudioBooks', value: 'AudioBooks'});
-    this.content_type.push({label: 'Serials', value: 'Serials'});
-    this.content_type.push({label: 'Others', value: 'Others'});
+  existTasks():boolean {
+    for (let torrent of this.torrents) {
+     if((torrent.task_id !=null) && (torrent.task_id.length!=0))
+       return true;
+    }
 
-    this.refreshTable();
+    return false;
   }
 
-  refreshTable() {
+  refreshTable(by_timer = false) {
     this.service.getLocals()
-      .then(torrents => { this.torrents = torrents; return torrents.length; })
-      .then(len => this.msgs.push(
-        { severity: 'success', summary: 'Load success', detail: len + ' torrents.' }));
+      .then(torrents => {
+        this.torrents = torrents;
+        super.refreshTableImpl(!by_timer, torrents.length);
+      });
   }
 
   removeTorrent(torrents: Local) {

@@ -73,14 +73,6 @@ export const PAGES_MENU = [
             }
           },
           {
-            path: 'icons',
-            data: {
-              menu: {
-                title: 'Icons',
-              }
-            }
-          },
-          {
             path: 'modals',
             data: {
               menu: {

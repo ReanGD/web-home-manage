@@ -18,7 +18,6 @@
         </template>
     </p-column>
     <p-column field="dir" header="Base dir" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
-    <p-column field="finished" header="Loaded" styleClass="col-finished" [sortable]="true"></p-column>
     <p-column styleClass="col-buttons">
         <template let-torrent="rowData" pTemplate="body">
             <button pButton *ngIf="(torrent.local==null) && torrent.finished" type="button" (click)="downloadTorrent(torrent)" icon="fa-cloud-download"></button>

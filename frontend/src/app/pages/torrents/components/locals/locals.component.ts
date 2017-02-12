@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {ConfirmationService} from "primeng/primeng";
 import {BaseTable} from '../../torrents.component';
 import {TorrentsService, Local} from '../../torrents.service';
 
@@ -6,20 +7,21 @@ import {TorrentsService, Local} from '../../torrents.service';
 @Component({
   selector: 'locals-table',
   templateUrl: 'locals.table.html',
+  providers: [ConfirmationService],
 })
 
 export class LocalsTable extends BaseTable {
 
   torrents: Local[];
 
-  constructor(private service: TorrentsService) {
-      super();
+  constructor(private service: TorrentsService, private confirmationService: ConfirmationService) {
+    super();
   }
 
-  existTasks():boolean {
+  existTasks(): boolean {
     for (let torrent of this.torrents) {
-     if((torrent.task_id !=null) && (torrent.task_id.length!=0))
-       return true;
+      if ((torrent.task_id != null) && (torrent.task_id.length != 0))
+        return true;
     }
 
     return false;
@@ -33,8 +35,15 @@ export class LocalsTable extends BaseTable {
       });
   }
 
-  removeTorrent(torrents: Local) {
-    this.service.removeLocal(torrents)
-      .then(() => this.refreshTable());
+  removeTorrent(torrent: Local) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete "' + torrent.remote.name + '"?',
+      header: 'Delete Confirmation',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.service.removeLocal(torrent)
+          .then(() => this.refreshTable(true));
+      }
+    });
   }
 }

@@ -3,7 +3,7 @@ import {CommonModule}  from '@angular/common';
 import {NgaModule} from '../../theme/nga.module';
 import {RatingModule} from 'ng2-bootstrap';
 import {DataTableModule, SharedModule, DropdownModule,
-  ButtonModule, GrowlModule} from 'primeng/primeng';
+  ButtonModule, GrowlModule, ConfirmDialogModule} from 'primeng/primeng';
 
 import {routing} from './torrents.routing';
 import {Torrents} from './torrents.component';
@@ -23,6 +23,7 @@ import {LocalsTable} from './components/locals/locals.component';
     DropdownModule,
     ButtonModule,
     GrowlModule,
+    ConfirmDialogModule,
   ],
   declarations: [
     Torrents,

@@ -31,14 +31,10 @@ class Remote(models.Model):
 
     @staticmethod
     def _update_or_create(torrent, db_torrent):
-        base_dir = settings.TORRENT['BASE_REMOTE']
         raw_files = [it for it in torrent.files().values() if it["selected"]]
         finished = not any(it['completed'] != it['size'] for it in raw_files)
-        dir = os.path.abspath(torrent.downloadDir)
-        if dir.startswith(base_dir):
-            dir = dir[len(base_dir):]
-        else:
-            raise RuntimeError('Unknown base directory for "{}"'.format(dir))
+        dir = os.path.relpath(os.path.abspath(torrent.downloadDir),
+                              settings.TORRENT['TRANSMISSION']['ROOT'])
         ratio = round(torrent.uploadRatio, 1)
         files = [{'file': it["name"]} for it in raw_files]
 

@@ -1,2 +1,2 @@
-- makemigrations torrents
-- migrate torrents
+- python manage.py makemigrations torrents
+- python manage.py migrate

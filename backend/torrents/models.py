@@ -12,6 +12,7 @@ class Remote(models.Model):
     finished = models.BooleanField(null=False)
     dir = models.TextField(null=False)
     raw_files = models.TextField(null=False)
+    size = models.IntegerField(null=False)
 
     @property
     def files(self):
@@ -36,7 +37,8 @@ class Remote(models.Model):
         dir = os.path.relpath(os.path.abspath(torrent.downloadDir),
                               settings.TORRENT['TRANSMISSION']['ROOT'])
         ratio = round(torrent.uploadRatio, 1)
-        files = [{'file': it["name"]} for it in raw_files]
+        files = [{'name': it['name'], 'size': it['size']} for it in raw_files]
+        size = torrent.sizeWhenDone
 
         if db_torrent is None:
             Remote.objects.create(id=torrent.hashString,
@@ -44,13 +46,15 @@ class Remote(models.Model):
                                   ratio=ratio,
                                   dir=dir,
                                   files=files,
-                                  finished=finished)
+                                  finished=finished,
+                                  size=size)
         else:
             db_torrent.name = torrent.name
             db_torrent.ratio = ratio
             db_torrent.dir = dir
             db_torrent.files = files
             db_torrent.finished = finished
+            db_torrent.size = size
             db_torrent.save()
 
     @staticmethod

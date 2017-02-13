@@ -37,7 +37,7 @@ export class RemotesTable extends BaseTable {
 
   downloadTorrent(torrent: Remote) {
     this.confirmationService.confirm({
-      message: 'Are you sure that you want to load "' + torrent.name + '"?',
+      message: 'Are you sure that you want to copy "' + torrent.name + '"?',
       accept: () => {
         this.service.createLocal(torrent)
           .then(() => this.refreshTable(true));

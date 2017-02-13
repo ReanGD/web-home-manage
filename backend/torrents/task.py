@@ -14,8 +14,8 @@ def create_local_torrent(torrent_id):
         local_root = os.path.join(settings.TORRENT['ROOT']['LOCAL'], remote.dir)
 
         for it in remote.files:
-            from_path = os.path.abspath(os.path.join(remote_root, it['file']))
-            to_path = os.path.abspath(os.path.join(local_root, it['file']))
+            from_path = os.path.abspath(os.path.join(remote_root, it['name']))
+            to_path = os.path.abspath(os.path.join(local_root, it['name']))
             print('Copy file from "%s" to "%s"' % (from_path, to_path))
             copy_file(from_path, to_path)
 

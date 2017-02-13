@@ -11,7 +11,7 @@ class RemoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Remote
-        fields = ('id', 'name', 'content_type', 'ratio', 'finished', 'dir', 'files', 'local')
+        fields = ('id', 'name', 'content_type', 'ratio', 'finished', 'dir', 'files', 'size', 'local')
 
 
 class RemoteShortSerializer(serializers.ModelSerializer):

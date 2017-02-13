@@ -8,6 +8,7 @@
         </template>
     </p-column>
     <p-column field="remote.name" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column field="remote.size" header="Size" styleClass="col-size" [sortable]="true"></p-column>
     <p-column field="remote.content_type" header="Content" [sortable]="true" [filter]="true" styleClass="col-content-type" filterMatchMode="equals">
         <template pTemplate="filter" let-col>
             <p-dropdown [options]="content_type" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
@@ -26,7 +27,8 @@
                 <div class="ui-grid-col-1"></div>
                 <div class="ui-grid-col-4">
                     <p-dataTable [value]="torrent.remote.files">
-                        <p-column field="file" header="Имя"></p-column>
+                        <p-column field="name" header="Name"></p-column>
+                        <p-column field="size" header="Size" styleClass="col-size"></p-column>
                     </p-dataTable>
                 </div>
             </div>

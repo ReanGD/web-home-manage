@@ -10,6 +10,7 @@ export interface Remote {
   finished;
   dir;
   files;
+  size,
   local;
 }
 
@@ -17,6 +18,7 @@ export interface RemoteShort {
   name;
   content_type;
   dir;
+  size;
   files;
 }
 

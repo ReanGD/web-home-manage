@@ -8,7 +8,11 @@
         </template>
     </p-column>
     <p-column field="name" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
-    <p-column field="size" header="Size" styleClass="col-size" [sortable]="true"></p-column>
+    <p-column field="size" header="Size" styleClass="col-size" [sortable]="true">
+        <template let-torrent="rowData" pTemplate="body">
+            {{torrent.size|baFileSize}}
+        </template>
+    </p-column>
     <p-column field="content_type" header="Content" [sortable]="true" styleClass="col-content-type" [filter]="true" filterMatchMode="equals">
         <template pTemplate="filter" let-col>
             <p-dropdown [options]="content_type" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
@@ -35,7 +39,11 @@
                 <div class="ui-grid-col-4">
                     <p-dataTable [value]="torrent.files">
                         <p-column field="name" header="Name"></p-column>
-                        <p-column field="size" header="Size" styleClass="col-size"></p-column>
+                        <p-column field="size" header="Size" styleClass="col-size">
+                            <template let-file="rowData" pTemplate="body">
+                                {{file.size|baFileSize}}
+                            </template>
+                        </p-column>
                     </p-dataTable>
                 </div>
             </div>

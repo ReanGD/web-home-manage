@@ -38,7 +38,8 @@ import {
 import {
   BaAppPicturePipe,
   BaKameleonPicturePipe,
-  BaProfilePicturePipe
+  BaProfilePicturePipe,
+  BaFileSizePipe
 } from './pipes';
 
 import {
@@ -78,7 +79,8 @@ const NGA_DIRECTIVES = [
 const NGA_PIPES = [
   BaAppPicturePipe,
   BaKameleonPicturePipe,
-  BaProfilePicturePipe
+  BaProfilePicturePipe,
+  BaFileSizePipe
 ];
 
 const NGA_SERVICES = [

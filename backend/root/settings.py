@@ -157,9 +157,9 @@ Q_CLUSTER = {
 
 TORRENT = {
     'CONTENT_MAP': {
-        'Films': '/Films',
-        'AudioBooks': '/AudioBooks',
-        'Serials': '/Serials',
+        'Films': 'Films',
+        'AudioBooks': 'AudioBooks',
+        'Serials': 'Serials',
     },
     'TRANSMISSION': {
         'HOST': '192.168.1.8',

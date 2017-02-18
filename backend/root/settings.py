@@ -151,7 +151,9 @@ CORS_ORIGIN_WHITELIST = (
 Q_CLUSTER = {
     'workers': 2,
     'orm': 'default',
-    'timeout': 15 * 60,
+    'timeout': 5 * 60,
+    'retry': 15 * 60,
+    'poll': 1.0,
     'catch_up': False,
 }
 
